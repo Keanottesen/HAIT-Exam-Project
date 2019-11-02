@@ -3,16 +3,10 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <script src="assets/js/script.js"></script>
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <script>
-    $(function(){
-      $("#nowPlaying-placeholder").load("nowPlayingBar.html");
-    });
-    $(function(){
-      $("#nav-placeholder").load("navBarContainer.html");
-    });
-    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="js/includes.js"></script>
+    <script src="js/script.js"></script>
     <title></title>
   </head>
   <body>
@@ -31,32 +25,12 @@
 
 
   </body>
+
+
   <script type="text/javascript">
 
-  //hardcoded albums
-  const albums =
-  [
-    {'id': 1, 'title': 'Bacon and Eggs', 'artistId': 2, 'genreId': 4, 'pathToPicture': 'assets/images/artwork/clearday.jpg'},
-    {'id': 2, 'title': 'Pizza head', 'artistId': 5, 'genreId': 10, 'pathToPicture': 'assets/images/artwork/energy.jpg'},
-    {'id': 3, 'title': 'Summer Hits', 'artistId': 3, 'genreId': 1, 'pathToPicture': 'assets/images/artwork/goinghigher.jpg'},
-    {'id': 4, 'title': 'The movie soundtrack', 'artistId': 2, 'genreId': 9, 'pathToPicture': 'assets/images/artwork/funkyelement.jpg'},
-    {'id': 5, 'title': 'Best of the Worst', 'artistId': 1, 'genreId': 3, 'pathToPicture': 'assets/images/artwork/popdance.jpg'},
-    {'id': 6, 'title': 'Hello World', 'artistId': 3, 'genreId': 6, 'pathToPicture': 'assets/images/artwork/ukulele.jpg'},
-    {'id': 7, 'title': 'Best beats', 'artistId': 4, 'genreId': 7, 'pathToPicture': 'assets/images/artwork/sweet.jpg'}
-  ];
 
 
-  //render data in html
-  document.querySelector('.gridViewContainer').innerHTML = albums.map(album =>
-     `<div class='gridViewItem'>
-     <span role='link' tabindex='0' onclick=''>
-         <img src='${album.pathToPicture}'>
-         <div class='gridViewInfo'>
-             ${album.title}
-         </div>
-       </span>
-       </div>`
-   ).join('')
 
 
   </script>
