@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="js/includes.js"></script>
+    <script src="js/script.js"></script>
+  </head>
+  <body>
+    <div id="mainContainer">
+        <div id="topContainer">
+          <div id="nav-placeholder"></div>
+          <div id="mainViewContainer">
+              <div class="userDetails">
+
+              	<div class="container borderBottom">
+              		<h2>EMAIL</h2>
+              		<input type="text" class="email" name="email" placeholder="Email address..." value="">
+              		<span class="message"></span>
+              		<button class="button" onclick="updateEmail('email')">SAVE</button>
+              	</div>
+
+              	<div class="container">
+              		<h2>PASSWORD</h2>
+              		<input type="password" class="oldPassword" name="oldPassword" placeholder="Current password">
+              		<input type="password" class="newPassword1" name="newPassword1" placeholder="New password">
+              		<input type="password" class="newPassword2" name="newPassword2" placeholder="Confirm password">
+              		<span class="message"></span>
+              		<button class="button" onclick="updatePassword('oldPassword', 'newPassword1', 'newPassword2')">SAVE</button>
+              	</div>
+
+              </div>
+
+            </div>
+          </div>
+    </div>
+    <div id="nowPlaying-placeholder"></div>
+  </body>
+</html>

@@ -65,12 +65,38 @@ const songs =
 	{'id': 31, 'title': 'Tomorrow', 'artistId': 3, 'albumId': 3, 'genreId': 1, 'duration': '4:54', 'path': 'assets/music/bensound-tomorrow.mp3 ', 'albumOrder': 1, 'plays': 15}
 ];
 
+const playlists =
+[
+{'id': 2, 'name': 'Playlist2', 'owner': 'reece-kenney', 'dateCreated': '2017-08-27 00:00:00'},
+{'id': 3, 'name': 'Running Songs', 'owner': 'reece-kenney', 'dateCreated': '2017-08-27 00:00:00'},
+{'id': 4, 'name': 'Classics', 'owner': 'reece-kenney', 'dateCreated': '2017-08-27 00:00:00'},
+{'id': 5, 'name': 'Party', 'owner': 'reece-kenney', 'dateCreated': '2017-08-27 00:00:00'},
+{'id': 6, 'name': 'This is a test', 'owner': 'reece-kenney', 'dateCreated': '2017-12-04 00:00:00'},
+{'id': 7, 'name': 'Bulldozer', 'owner': 'reece-kenney', 'dateCreated': '2017-12-04 00:00:00'},
+];
+
+const playlistSongs =
+[
+{'id': 6, 'songId': 17, 'playlistId': 2, 'playlistOrder': 4},
+{'id': 8, 'songId': 16, 'playlistId': 5, 'playlistOrder': 0},
+{'id': 9, 'songId': 15, 'playlistId': 3, 'playlistOrder': 0},
+{'id': 10, 'songId': 14, 'playlistId': 4, 'playlistOrder': 0},
+{'id': 11, 'songId': 17, 'playlistId': 3, 'playlistOrder': 1},
+{'id': 12, 'songId': 16, 'playlistId': 3, 'playlistOrder': 2},
+{'id': 13, 'songId': 16, 'playlistId': 5, 'playlistOrder': 1},
+{'id': 14, 'songId': 14, 'playlistId': 3, 'playlistOrder': 3},
+{'id': 15, 'songId': 5, 'playlistId': 5, 'playlistOrder': 2},
+{'id': 16, 'songId': 23, 'playlistId': 4, 'playlistOrder': 1},
+{'id': 17, 'songId': 6, 'playlistId': 2, 'playlistOrder': 5},
+{'id': 18, 'songId': 29, 'playlistId': 3, 'playlistOrder': 4},
+];
+
 let state = null;
 
 if (localStorage.getItem("state") === null) {
 	state = {
 		album_id: null,
-
+		playlist_id: null
 	}
 	const storageState = JSON.stringify(state);
 	localStorage.setItem('state', storageState);
@@ -89,11 +115,19 @@ function setState(key, value){
 	localStorage.setItem('state', storageState);
 }
 
+const playlistOnclickHandler = (clicked) => {
+	setState('playlist_id', clicked.id);
+	window.location = 'playlist.html';
+}
+
 const onAlbumClickHandler = (clicked) => {
 
 	setState('album_id', clicked.id);
 	window.location = 'album.html';
 }
+
+
+
 
 $(document).click(function(click) {
 	var target = $(click.target);
@@ -387,8 +421,56 @@ $(document).ready(function(){
 				 </div>`
 		 ).join('')
 			break;
+		case '/yourMusic':
+		console.log(playlists);
+			document.querySelector('.playlistsGridContainer').innerHTML = playlists.map(playlist =>
+				`      <div id='${playlist.id}'class='gridViewItem' role='link' tabindex='0'
+										onclick='playlistOnclickHandler(this)'>
+									<div class='playlistImage'>
+										<img src='assets/images/icons/playlist.png'>
+									</div>
+									<div class='gridViewInfo'>
+									${playlist.name}
+									</div>
+								</div>`).join('')
+			break;
+		case '/playlist':
 
+				const playlistId = JSON.parse(localStorage.getItem("state")).playlist_id
+				const playlistProperty = playlists.find(x => x.id == playlistId)
+				const songIds = playlistSongs.filter(x => x.playlistId == playlistId).map(item => item.songId)
+				const songsInPlaylist = songs.filter(x => songIds.includes(x.id))
+
+				document.getElementById('playlistName').innerHTML = playlistProperty.name;
+				document.getElementById('playlistOwner').innerHTML = playlistProperty.owner;
+				document.getElementById('playlistSongs').innerHTML = songIds.length + ' songs';
+
+				document.querySelector('.tracklist').innerHTML = songsInPlaylist.map((song, index) =>
+				`            <li class='tracklistRow'>
+				        					<div class='trackCount'>
+				        						<img class='play' src='assets/images/icons/play-white.png' onclick=''>
+				        						<span class='trackNumber'>${index + 1}</span>
+				        					</div>
+
+
+				        					<div class='trackInfo'>
+				        						<span class='trackName'>${song.title}</span>
+				        						<span class='artistName'>${artist.find(x => x.id == song.artistId).name}</span>
+				        					</div>
+
+				        					<div class='trackOptions'>
+				        						<input type='hidden' class='songId' value='" . $playlistSong->getId() . "'>
+				        						<img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this)'>
+				        					</div>
+
+				        					<div class='trackDuration'>
+				        						<span class='duration'>${song.duration}</span>
+				        					</div>
+
+
+				        				</li>`
+			).join('')
+
+			break;
 	}
-
-
 })
