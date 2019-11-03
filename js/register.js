@@ -1,12 +1,13 @@
 $(document).ready(function() {
+let knowUser = true;
 
-	$("#hideLogin").click(function() {
+if (!knowUser) {
 		$("#loginForm").hide();
 		$("#registerForm").show();
-	});
 
-	$("#hideRegister").click(function() {
+} else {
 		$("#loginForm").show();
 		$("#registerForm").hide();
-	});
+}
+
 });
