@@ -837,7 +837,6 @@ function Audio() {
 
 }
 
-
 //all rendering before ducoument is ready
 $(document).ready(function() {
   switch (window.location.pathname) {
@@ -944,5 +943,13 @@ $(document).ready(function() {
       ).join('')
 
       break;
+		case '/settings':
+
+					let users = JSON.parse(localStorage.users)
+					console.log(users);
+					const userLoggedIn = users.find(x => x.active === true);
+					document.getElementById('activeUserName').innerHTML = userLoggedIn.firstName + ' ' + userLoggedIn.lastName;
+					console.log(userLoggedIn);
+			break;
   }
 })

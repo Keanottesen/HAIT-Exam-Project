@@ -7,7 +7,7 @@ var users =[
     'lastName': 'Ottesen',
     'email': 'kean_ottesen@hotmail.com',
     'password': '123456789',
-    'active': true
+    'active': false
 },
 {    'id': 2,
     'firstName': 'Mikkel',
@@ -15,7 +15,7 @@ var users =[
     'lastName': 'Svensson',
     'email': 'mikkel_svensson@hotmail.com',
     'password': '123456789',
-    'active': true
+    'active': false
 },
 {    'id': 3,
     'firstName': 'Oliver',
@@ -31,7 +31,7 @@ var users =[
     'lastName': 'Sørensen',
     'email': 'Svend_Sørensen@hotmail.com',
     'password': '123456789',
-    'active': true
+    'active': false
 },
 {    'id': 5,
     'firstName': 'Lars',
@@ -39,9 +39,12 @@ var users =[
     'lastName': 'Larsen',
     'email': 'lars_larsen@hotmail.com',
     'password': '123456789',
-    'active': true
+    'active': false
 }
 ]
+
+const storgaeUsers = JSON.stringify(users);
+localStorage.setItem('users', storgaeUsers);
 
 
 function validateLogin(){
@@ -60,15 +63,17 @@ function validateLogin(){
 
 
 function createUser(){
-    users.push(
-      {
-        'id': users.length + 1,
+  let newUser = {'id': users.length + 1,
         'firstName': document.forms['registerForm']['firstName'].value,
         'userName': document.forms['registerForm']['username'].value,
         'lastName': document.forms['registerForm']['lastName'].value,
         'email': document.forms['registerForm']['email'].value,
         'password': document.forms['registerForm']['password'].value,
-        'active': true
-      }
-    )
+        'active': true}
+
+    const storgaeNewUser = JSON.stringify(newUser);
+    const currentUsers = JSON.parse(localStorage.getItem('users'));
+    currentUsers.push(newUser);
+    const storgaeUsers = JSON.stringify(currentUsers);
+    localStorage.setItem('users', storgaeUsers);
 }
