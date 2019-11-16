@@ -459,76 +459,64 @@ let playlists = [
 pushToLocalStorage(playlists, 'playlists')
 let playlistSongs = [
 	{
-    'id': 6,
+    'id': 1,
     'songId': 17,
-    'playlistId': 2,
-    'playlistOrder': 4
+    'playlistId': 2
   },
   {
-    'id': 8,
+    'id': 2,
     'songId': 16,
-    'playlistId': 5,
-    'playlistOrder': 0
+    'playlistId': 5
   },
   {
-    'id': 9,
+    'id': 3,
     'songId': 15,
-    'playlistId': 3,
-    'playlistOrder': 0
+    'playlistId': 3
   },
   {
-    'id': 10,
+    'id': 4,
     'songId': 14,
-    'playlistId': 4,
-    'playlistOrder': 0
+    'playlistId': 4
   },
   {
-    'id': 11,
+    'id': 5,
     'songId': 17,
-    'playlistId': 3,
-    'playlistOrder': 1
+    'playlistId': 3
   },
   {
-    'id': 12,
+    'id': 6,
     'songId': 16,
-    'playlistId': 3,
-    'playlistOrder': 2
+    'playlistId': 3
   },
   {
-    'id': 13,
+    'id': 7,
     'songId': 16,
-    'playlistId': 5,
-    'playlistOrder': 1
+    'playlistId': 5
   },
   {
     'id': 14,
     'songId': 14,
-    'playlistId': 3,
-    'playlistOrder': 3
+    'playlistId': 3
   },
   {
-    'id': 15,
+    'id': 8,
     'songId': 5,
-    'playlistId': 5,
-    'playlistOrder': 2
+    'playlistId': 5
   },
   {
-    'id': 16,
+    'id': 9,
     'songId': 23,
-    'playlistId': 4,
-    'playlistOrder': 1
+    'playlistId': 4
   },
   {
-    'id': 17,
+    'id': 10,
     'songId': 6,
-    'playlistId': 2,
-    'playlistOrder': 5
+    'playlistId': 2
   },
   {
-    'id': 18,
+    'id': 11,
     'songId': 29,
-    'playlistId': 3,
-    'playlistOrder': 4
+    'playlistId': 3
   },
 ];
 pushToLocalStorage(playlistSongs, 'playlistSongs')

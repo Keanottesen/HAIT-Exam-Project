@@ -17,10 +17,12 @@ let users = JSON.parse(localStorage.users);
 let playlistSongs = JSON.parse(localStorage.playlistSongs);
 
 
+
 if (localStorage.getItem("state") === null) {
   state = {
     album_id: null,
-    playlist_id: null
+    playlist_id: null,
+    song_id: null
   }
   const storageState = JSON.stringify(state);
   localStorage.setItem('state', storageState);
@@ -42,6 +44,10 @@ function setState(key, value) {
 const playlistOnclickHandler = (clicked) => {
   setState('playlist_id', clicked.id);
   window.location = 'playlist.html';
+}
+
+const songOnclickHandler = (song) => {
+  setState('song_id', song);
 }
 
 const onAlbumClickHandler = (clicked) => {
@@ -70,65 +76,136 @@ $(window).scroll(function() {
   hideOptionsMenu();
 });
 
-$(document).on("change", "select.playlist", function() {
-  var select = $(this);
-  var playlistId = select.val();
-  var songId = select.prev(".songId").val();
-
-  $.post("includes/handlers/ajax/addToPlaylist.php", {
-      playlistId: playlistId,
-      songId: songId
-    })
-    .done(function(error) {
-
-      if (error != "") {
-        alert(error);
-        return;
-      }
-
-      hideOptionsMenu();
-      select.val("");
-    });
-});
-
-
-function updateEmail(emailClass) {
-  var emailValue = $("." + emailClass).val();
-
-  $.post("includes/handlers/ajax/updateEmail.php", {
-      email: emailValue,
-      username: userLoggedIn
-    })
-    .done(function(response) {
-      $("." + emailClass).nextAll(".message").text(response);
-    })
-
-
+function toObject(arr) {
+  var rv = {};
+  for (var i = 0; i < arr.length; ++i)
+    if (arr[i] !== undefined) rv[i] = arr[i];
+  return rv;
 }
 
-function updatePassword(oldPasswordClass, newPasswordClass1, newPasswordClass2) {
-  var oldPassword = $("." + oldPasswordClass).val();
-  var newPassword1 = $("." + newPasswordClass1).val();
-  var newPassword2 = $("." + newPasswordClass2).val();
+function addToPlaylist() {
 
-  $.post("includes/handlers/ajax/updatePassword.php", {
-      oldPassword: oldPassword,
-      newPassword1: newPassword1,
-      newPassword2: newPassword2,
-      username: userLoggedIn
-    })
+  const userLoggedIn = users.find(x => x.active === true);
 
-    .done(function(response) {
-      $("." + oldPasswordClass).nextAll(".message").text(response);
-    })
+//when the playlist datastructure is right
+  //const userPlaylists = playlists.map(x => x.owner == userLoggedIn.userName)
+  const playlistNames = playlists.map(x => x.name);
+  const newNames = toObject(playlistNames);
+  (async () => {
+    var {value: newSongToPlaylist} = await Swal.fire({
+    title: 'Tilføj til playliste',
+    input: 'select',
+    inputOptions: newNames,
+    inputPlaceholder: 'Vælg din playliste',
+    background: '#181818',
+    icon: 'question',
+    confirmButtonText: 'Skab din playliste',
+    confirmButtonColor: '#2FBD5A',
+    inputValidator: (value) => {
+        if (!value) {
+          return 'Du bliver nødt til at vælge en playliste';
+        };
+      }
+  })
 
+    const choosenPlaylist = playlists[newSongToPlaylist];
+    console.log(choosenPlaylist);
+    const songId = JSON.parse(localStorage.getItem("state")).song_id
 
+        playlistSongs.push({
+                'id': playlistSongs.length,
+                'playlistId': choosenPlaylist.id,
+                'songId': songId
+            })
+
+        const storageObject = JSON.stringify(playlistSongs);
+        localStorage.setItem('playlistSongs', storageObject);
+
+})()
+}
+
+function updateEmail() {
+
+  const newEmail = document.querySelectorAll('.updatedEmail')[0].value;
+
+  const userLoggedIn = users.find(x => x.active === true);
+
+  let usersArray = users
+
+  for (var i = 0; i < usersArray.length; i++) {
+    if (usersArray[i].id == userLoggedIn.id) {
+        usersArray.splice(i, 1);
+    }
+  }
+
+  usersArray.push({
+        'active': userLoggedIn.active,
+        'email': newEmail,
+        'firstName': userLoggedIn.firstName,
+        'id': userLoggedIn.id,
+        'lastName': userLoggedIn.lastName,
+        'password': userLoggedIn.password,
+        'userName': userLoggedIn.userName
+      })
+
+  this.pushToLocalStorage(usersArray, 'users');
+}
+
+function updatePassword() {
+
+  const oldPassword = document.querySelectorAll('.oldPassword')[0].value;
+  const new1Password = document.querySelectorAll('.newPassword1')[0].value;
+  const new2Password = document.querySelectorAll('.newPassword2')[0].value;
+
+  const userLoggedIn = users.find(x => x.active === true);
+
+  if (new1Password == new2Password) {
+
+    let usersArray = users
+
+    for (var i = 0; i < usersArray.length; i++) {
+      if (usersArray[i].id == userLoggedIn.id) {
+          usersArray.splice(i, 1);
+      }
+    }
+    usersArray.push({
+          'active': userLoggedIn.active,
+          'email': userLoggedIn.email,
+          'firstName': userLoggedIn.firstName,
+          'id': userLoggedIn.id,
+          'lastName': userLoggedIn.lastName,
+          'password': new1Password,
+          'userName': userLoggedIn.userName
+        })
+
+    this.pushToLocalStorage(usersArray, 'users');
+
+  }
 }
 
 function logout() {
-  $.post("includes/handlers/ajax/logout.php", function() {
-    location.reload();
-  });
+
+  const userLoggedIn = users.find(x => x.active === true);
+  for (var i = 0; i < users.length; i++) {
+    if (users[i].id == userLoggedIn.id) {
+        users.splice(i, 1);
+    }
+  }
+
+  users.push({
+        'active': false,
+        'email': userLoggedIn.email,
+        'firstName': userLoggedIn.firstName,
+        'id': userLoggedIn.id,
+        'lastName': userLoggedIn.lastName,
+        'passWord': userLoggedIn.passWord,
+        'userName': userLoggedIn.userName
+      })
+
+  this.pushToLocalStorage(users, 'users');
+
+  window.location = 'index.html';
+
 }
 
 function openPage(url) {
@@ -147,53 +224,73 @@ function openPage(url) {
   history.pushState(null, null, url);
 }
 
-function removeFromPlaylist(button, playlistId) {
-  var songId = $(button).prevAll(".songId").val();
-
-  $.post("includes/handlers/ajax/removeFromPlaylist.php", {
-      playlistId: playlistId,
-      songId: songId
-    })
-    .done(function(error) {
-
-      if (error != "") {
-        alert(error);
-        return;
-      }
-
-      //do something when ajax returns
-      openPage("playlist.php?id=" + playlistId);
-    });
-}
 
 function createPlaylist() {
 
-  var popup = prompt("Please enter the name of your playlist");
+  (async () => {
 
-	let users = JSON.parse(localStorage.users)
-	const userLoggedIn = users.find(x => x.active === true);
+    var {value: newPlaylist} = await Swal.fire({
+    title: 'Hvad skal din playlist hedde?',
+    input: 'text',
+    inputPlaceholder: 'Min playliste',
+    background: '#181818',
+    icon: 'question',
+    confirmButtonText: 'Skab din playliste',
+    confirmButtonColor: '#2FBD5A',
+    inputAttributes: {
+    maxlength: 15,
+    autocapitalize: 'on',
+    autocorrect: 'off'
+  }
+  })
 
-  if (popup != null) {
-		playlists.push({
-			    'id': JSON.parse(localStorage.playlists).length + 1,
-			    'name': popup,
-			    'owner': userLoggedIn.userName,
-			    'dateCreated': new Date()
-			  })
+  	const userLoggedIn = users.find(x => x.active === true);
 
-				this.pushToLocalStorage(playlists, 'playlists');
+    if (newPlaylist != null) {
+  		playlists.push({
+  			    'id': JSON.parse(localStorage.playlists).length + 1,
+  			    'name': newPlaylist,
+  			    'owner': userLoggedIn.userName,
+  			    'dateCreated': new Date()
+  			  })
 
-        location.reload();
-      };
+  				this.pushToLocalStorage(playlists, 'playlists');
+
+          location.reload();
+        };
+
+})()
 
   }
+function deletePlaylist() {
 
-function deletePlaylist(playlistId) {
+    (async () => {
+
+      var deletedPlaylist = await Swal.fire({
+      title: 'Er du sikker?',
+      background: '#181818',
+      icon: 'info',
+      confirmButtonText: 'Slet min playliste',
+      confirmButtonColor: '#2FBD5A',
+    }).then(() => {
+
+      const deletedPlaylistId = JSON.parse(localStorage.getItem("state")).playlist_id
+      for (var i = 0; i < playlists.length; i++) {
+
+        if (playlists[i].id == deletedPlaylistId) {
+          console.log(playlists[i]);
+            playlists.splice(i, 1);
+        }
+      }
+      const storageObject = JSON.stringify(playlists);
+      localStorage.setItem('playlists', storageObject);
+      window.location = 'yourMusic.html';
+    })
 
 
 
-        window.location = 'yourMusic.html'
 
+  })()
 }
 
 function hideOptionsMenu() {
@@ -203,7 +300,10 @@ function hideOptionsMenu() {
   }
 }
 
-function showOptionsMenu(button) {
+function showOptionsMenu(button, songId) {
+
+  songOnclickHandler(songId);
+
   var songId = $(button).prevAll(".songId").val();
   var menu = $(".optionsMenu");
   var menuWidth = menu.width();
@@ -251,6 +351,7 @@ function playFirstSong() {
   setTrack(tempPlaylist[0], tempPlaylist, true);
 }
 
+
 function Audio() {
 
   this.currentlyPlaying;
@@ -295,8 +396,14 @@ function Audio() {
 
 }
 
+
 //all rendering before ducoument is ready
 $(document).ready(function() {
+
+  const userLoggedIn = users.find(x => x.active === true);
+  setTimeout(function(){document.getElementById('activeUserName').innerHTML = userLoggedIn.firstName + " " + userLoggedIn.lastName}, 50);
+
+
   switch (window.location.pathname) {
     case '/album':
 
@@ -326,7 +433,7 @@ $(document).ready(function() {
 
 			                      <div class='trackOptions'>
 			                        <input type='hidden' class='songId' value=''>
-			                        <img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this)'>
+			                        <img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this, ${song.id})'>
 			                      </div>
 
 			                      <div class='trackDuration'>

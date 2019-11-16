@@ -5,7 +5,11 @@
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="assets/css/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
   <script src="js/includes.js"></script>
+  <script src="sweetalert2.all.min.js"></script>
+  <script src="sweetalert2.min.js"></script>
+  <link rel="stylesheet" href="sweetalert2.min.css">
   <script src="js/script.js"></script>
   <title>Album</title>
 </head>
@@ -17,34 +21,23 @@
       <div id="mainViewContainer">
 
         <div class="entityInfo">
-
           <div class="leftSection">
             <img id="albumCover" src="">
           </div>
-
           <div class="rightSection">
-            <h2 id="albumTitle">en title</h2>
+            <h2 id="albumTitle"></h2>
             <p id="artistName" role="link" tabindex="0" onclick=""></p>
-            <p id="numberOfSongs">12 (antal af sage)</p>
-
+            <p id="numberOfSongs"></p>
           </div>
-
         </div>
-
 
         <div class="tracklistContainer">
           <ul class="tracklist">
-
-
-
           </ul>
         </div>
 
-
         <nav class="optionsMenu">
-          <input type="hidden" class="songId">
-          <select class="item playlist">
-          <option value="">Indsæt til en playliste</option>
+          <button type="button" class="item playlist" id=playlistOptions onclick="addToPlaylist()">Tilføj til playliste</button>
         </nav>
 
 

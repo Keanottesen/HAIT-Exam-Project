@@ -9,6 +9,7 @@
 	<script src="js/register.js"></script>
 	<script src="handlers/login-handler.js"></script>
 	<script src="handlers/register-handler.js"></script>
+	<script src="js/localStorage.js"></script>
 </head>
 
 <body>
@@ -17,11 +18,11 @@
 		<div id="loginContainer">
 
 			<div id="inputContainer">
-				<form name="loginForm" id="loginForm" action="browse.html" onsubmit="return validateLogin()">
+				<form name="loginForm" id="loginForm" onSubmit="validateLogin()" action="browse.html">
 					<h2>Log ind på din profil</h2>
 					<p>
-						<label for="loginUsername">Email</label>
-						<input id="loginUsername" name="loginUsername" type="text" placeholder="Indtast dit brugernavn" value="" required autocomplete="off">
+						<label for="loginEmail">Email</label>
+						<input id="loginEmail" name="loginEmail" type="text" placeholder="Indtast din email" value="" required autocomplete="off">
 					</p>
 					<p>
 						<label for="loginPassword">Password</label>

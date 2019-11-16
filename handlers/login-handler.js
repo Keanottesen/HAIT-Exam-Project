@@ -49,16 +49,40 @@ localStorage.setItem('users', storgaeUsers);
 
 function validateLogin(){
   //retrieves all usernames
-  const usernames = users.map(user => (user.userName));
-  const passwords = users.map(user => (user.password));
 
-  var username = document.forms['loginForm']['loginUsername'].value;
+  const allEmails = users.map(user => (user.email));
+  const allPasswords = users.map(user => (user.password));
+
+  var email = document.forms['loginForm']['loginEmail'].value;
   var password = document.forms['loginForm']['loginPassword'].value;
 
-    if (!usernames.includes(username) && !passwords.includes(password)) {
-        alert('Dit brugernavn eller kodeord er forkert');
-        return false;
+  if (!allEmails.includes(email) && !allPasswords.includes(password)) {
+      alert('Dit brugernavn eller kodeord er forkert');
+      return false;
+  }
+
+  const userLoggedIn = users.find(x => x.email == email);
+
+  for (var i = 0; i < users.length; i++) {
+    if (users[i].id == userLoggedIn.id) {
+        users.splice(i, 1);
     }
+  }
+
+  users.push({
+        'active': true,
+        'email': userLoggedIn.email,
+        'firstName': userLoggedIn.firstName,
+        'id': userLoggedIn.id,
+        'lastName': userLoggedIn.lastName,
+        'passWord': userLoggedIn.passWord,
+        'userName': userLoggedIn.userName
+      })
+
+      const storageObject = JSON.stringify(users);
+      localStorage.setItem('users', storageObject);
+
+
 }
 
 
