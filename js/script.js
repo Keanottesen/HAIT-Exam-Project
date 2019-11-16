@@ -83,6 +83,27 @@ function toObject(arr) {
   return rv;
 }
 
+function removeFromPlaylist() {
+
+  const userLoggedIn = users.find(x => x.active === true);
+  const songId = JSON.parse(localStorage.getItem("state")).song_id;
+  const playlistId = JSON.parse(localStorage.getItem("state")).playlist_id;
+
+  const deletedPlaylistSong = playlistSongs.find(x => x.playlistId == playlistId && x.songId == songId);
+
+  for (var i = 0; i < playlistSongs.length; i++) {
+
+    if (playlistSongs[i].id == deletedPlaylistSong.id) {
+        playlistSongs.splice(i, 1);
+    }
+  }
+
+  const storageObject = JSON.stringify(playlistSongs);
+  localStorage.setItem('playlistSongs', storageObject);
+  location.reload();
+
+}
+
 function addToPlaylist() {
 
   const userLoggedIn = users.find(x => x.active === true);
@@ -109,7 +130,6 @@ function addToPlaylist() {
   })
 
     const choosenPlaylist = playlists[newSongToPlaylist];
-    console.log(choosenPlaylist);
     const songId = JSON.parse(localStorage.getItem("state")).song_id
 
         playlistSongs.push({
@@ -496,7 +516,7 @@ $(document).ready(function() {
 
 				        					<div class='trackOptions'>
 				        						<input type='hidden' class='songId' value='" . $playlistSong->getId() . "'>
-				        						<img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this)'>
+				        						<img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this, ${song.id})'>
 				        					</div>
 
 				        					<div class='trackDuration'>
