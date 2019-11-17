@@ -422,39 +422,183 @@ let playlists = [
 	{
     'id': 1,
     'name': 'Playlist2',
-    'owner': 'reece-kenney',
+    'ownerUserId': '1',
     'dateCreated': '2017-08-27 00:00:00'
   },
   {
     'id': 2,
     'name': 'Running Songs',
-    'owner': 'reece-kenney',
+    'ownerUserId': '1',
     'dateCreated': '2017-08-27 00:00:00'
   },
   {
     'id': 3,
     'name': 'Classics',
-    'owner': 'reece-kenney',
+    'ownerUserId': '1',
     'dateCreated': '2017-08-27 00:00:00'
   },
   {
     'id': 4,
     'name': 'Party',
-    'owner': 'reece-kenney',
+    'ownerUserId': '1',
     'dateCreated': '2017-08-27 00:00:00'
   },
   {
     'id': 5,
     'name': 'This is a test',
-    'owner': 'reece-kenney',
+    'ownerUserId': '1',
     'dateCreated': '2017-12-04 00:00:00'
   },
   {
     'id': 6,
     'name': 'Bulldozer',
-    'owner': 'reece-kenney',
+    'ownerUserId': '2',
     'dateCreated': '2017-12-04 00:00:00'
   },
+	{
+		'id': 7,
+		'name': 'Playlist2',
+		'ownerUserId': '2',
+		'dateCreated': '2017-08-27 00:00:00'
+	},
+	{
+		'id': 8,
+		'name': 'Running Songs',
+		'ownerUserId': '2',
+		'dateCreated': '2017-08-27 00:00:00'
+	},
+	{
+		'id': 9,
+		'name': 'Classics',
+		'ownerUserId': '2',
+		'dateCreated': '2017-08-27 00:00:00'
+	},
+	{
+		'id': 10,
+		'name': 'Party',
+		'ownerUserId': '3',
+		'dateCreated': '2017-08-27 00:00:00'
+	},
+	{
+		'id': 11,
+		'name': 'This is a test',
+		'ownerUserId': '3',
+		'dateCreated': '2017-12-04 00:00:00'
+	},
+	{
+		'id': 12,
+		'name': 'Bulldozer',
+		'ownerUserId': '3',
+		'dateCreated': '2017-12-04 00:00:00'
+	},
+	{
+		'id': 13,
+		'name': 'Playlist2',
+		'ownerUserId': '3',
+		'dateCreated': '2017-08-27 00:00:00'
+	},
+	{
+		'id': 14,
+		'name': 'Running Songs',
+		'ownerUserId': '3',
+		'dateCreated': '2017-08-27 00:00:00'
+	},
+	{
+		'id': 15,
+		'name': 'Classics',
+		'ownerUserId': '4',
+		'dateCreated': '2017-08-27 00:00:00'
+	},
+	{
+		'id': 16,
+		'name': 'Party',
+		'ownerUserId': '4',
+		'dateCreated': '2017-08-27 00:00:00'
+	},
+	{
+		'id': 17,
+		'name': 'This is a test',
+		'ownerUserId': '4',
+		'dateCreated': '2017-12-04 00:00:00'
+	},
+	{
+		'id': 18,
+		'name': 'Bulldozer',
+		'ownerUserId': '4',
+		'dateCreated': '2017-12-04 00:00:00'
+	},
+	{
+		'id': 19,
+		'name': 'Playlist2',
+		'ownerUserId': '4',
+		'dateCreated': '2017-08-27 00:00:00'
+	},
+	{
+		'id': 20,
+		'name': 'Running Songs',
+		'ownerUserId': '5',
+		'dateCreated': '2017-08-27 00:00:00'
+	},
+	{
+		'id': 21,
+		'name': 'Classics',
+		'ownerUserId': '5',
+		'dateCreated': '2017-08-27 00:00:00'
+	},
+	{
+		'id': 22,
+		'name': 'Party',
+		'ownerUserId': '5',
+		'dateCreated': '2017-08-27 00:00:00'
+	},
+	{
+		'id': 23,
+		'name': 'This is a test',
+		'ownerUserId': '5',
+		'dateCreated': '2017-12-04 00:00:00'
+	},
+	{
+		'id': 24,
+		'name': 'Bulldozer',
+		'ownerUserId': '5',
+		'dateCreated': '2017-12-04 00:00:00'
+	},
+	{
+		'id': 25,
+		'name': 'Playlist2',
+		'ownerUserId': '1',
+		'dateCreated': '2017-08-27 00:00:00'
+	},
+	{
+		'id': 26,
+		'name': 'Running Songs',
+		'ownerUserId': '1',
+		'dateCreated': '2017-08-27 00:00:00'
+	},
+	{
+		'id': 27,
+		'name': 'Classics',
+		'ownerUserId': '1',
+		'dateCreated': '2017-08-27 00:00:00'
+	},
+	{
+		'id': 28,
+		'name': 'Party',
+		'ownerUserId': '1',
+		'dateCreated': '2017-08-27 00:00:00'
+	},
+	{
+		'id': 29,
+		'name': 'This is a test',
+		'ownerUserId': '1',
+		'dateCreated': '2017-12-04 00:00:00'
+	},
+	{
+		'id': 32,
+		'name': 'Bulldozer',
+		'ownerUserId': '1',
+		'dateCreated': '2017-12-04 00:00:00'
+	},
 ];
 pushToLocalStorage(playlists, 'playlists')
 let playlistSongs = [

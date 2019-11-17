@@ -21,6 +21,7 @@ let playlistSongs = JSON.parse(localStorage.playlistSongs);
 if (localStorage.getItem("state") === null) {
   state = {
     album_id: null,
+    artist_id: null,
     playlist_id: null,
     song_id: null
   }
@@ -56,6 +57,12 @@ const onAlbumClickHandler = (clicked) => {
   window.location = 'album.html';
 }
 
+const onArtistClickHandler = (clicked) => {
+
+  setState('artist_id', clicked.id);
+  window.location = 'artist.html';
+}
+
 function pushToLocalStorage(object, name) {
   const storageObject = JSON.stringify(object);
   localStorage.setItem(name, storageObject);
@@ -82,6 +89,7 @@ function toObject(arr) {
     if (arr[i] !== undefined) rv[i] = arr[i];
   return rv;
 }
+
 
 function removeFromPlaylist() {
 
@@ -464,6 +472,50 @@ $(document).ready(function() {
 
 
       break;
+      case '/artist':
+
+        const artistId = JSON.parse(localStorage.getItem("state")).artist_id
+        const choosenArtist = artist.find(x => x.id == artistId);
+        const artistSongs = songs.filter(x => x.artistId == artistId)
+        const artistAlbums = albums.filter(x => x.artistId == artistId)
+        //setting values in artist.html
+        document.querySelector('.artistName').innerHTML = choosenArtist.name;
+
+        document.querySelector('.tracklist').innerHTML = artistSongs.map((song, index) =>
+          `<li class='tracklistRow'>
+      					<div class='trackCount'>
+      						<img class='play' src='assets/images/icons/play-white.png' onclick='setTrack(\"" . $albumSong->getId() . "\", tempPlaylist, true)'>
+      						<span class='trackNumber'>${index + 1}</span>
+      					</div>
+
+
+      					<div class='trackInfo'>
+      						<span class='trackName'>${song.title}</span>
+      						<span class='artistName'>${artist.find(x => x.id == song.artistId).name}</span>
+      					</div>
+
+      					<div class='trackOptions'>
+      						<input type='hidden' class='songId' value=''>
+      						<img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this)'>
+      					</div>
+
+      					<div class='trackDuration'>
+      						<span class='duration'>${song.duration}</span>
+      					</div>
+      				</li>`
+        ).join('')
+
+        document.querySelector('.gridViewInnerContainer').innerHTML = artistAlbums.map((album, index) =>
+        `<div class='gridViewItem'>
+            <span role='link' id=${album.id} tabindex='0' onclick='onAlbumClickHandler(this)'>
+              <img src='${album.pathToPicture}'>
+              <div class='gridViewInfo'>${album.title}</div>
+              </span>
+            </div>`
+        ).join('')
+
+
+        break;
     case '/browse':
       //render data in html
       console.log(albums);
@@ -532,5 +584,64 @@ $(document).ready(function() {
 		const userLoggedIn = users.find(x => x.active === true);
 		document.getElementById('activeUserName').innerHTML = userLoggedIn.firstName + ' ' + userLoggedIn.lastName;
 			break;
+    case '/search':
+    const typeHandler = function(e) {
+
+        let searchString = e.target.value;
+        const songsMacthingSearchString = songs.filter(x => x.title.includes(searchString))
+        const albumsMacthingSearchString = albums.filter(x => x.title.includes(searchString))
+        const artistsMacthingSearchString = artist.filter(x => x.name.includes(searchString))
+
+          if (searchString !== '') {
+            // render songs
+            document.querySelector('.tracklist').innerHTML = songsMacthingSearchString.map((song, index) =>
+              `      <li class='tracklistRow'>
+                      <div class='trackCount'>
+                        <img class='play' src='assets/images/icons/play-white.png' onclick=''>
+                        <span class='trackNumber'>${index + 1}</span>
+                      </div>
+                      <div class='trackInfo'>
+                        <span class='trackName'>${song.title}</span>
+                        <span class='artistName'>${artist.find(x => x.id === song.artistId).name}</span>
+                      </div>
+
+                      <div class='trackOptions'>
+                        <input type='hidden' class='songId' value='" . $albumSong->getId() . "'>
+                        <img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this)'>
+                      </div>
+
+                      <div class='trackDuration'>
+                        <span class='duration'>${song.duration}</span>
+                      </div>
+                    </li>`
+            ).join('')
+
+          //render artist
+          document.querySelector('.artistsInnerContainer').innerHTML = artistsMacthingSearchString.map((artist, index) =>
+          ` <div class='searchResultRow'>
+              <div class='artistName'>
+                <span role='link' id=${artist.id} tabindex='0' onclick='onArtistClickHandler(this)'>
+                    ${artist.name}
+                </span>
+              </div>
+            </div>`
+          ).join('')
+
+          //render albums
+          document.querySelector('.gridViewInnerContainer').innerHTML = albumsMacthingSearchString.map((album, index) =>
+          ` <div class='gridViewItem'>
+      				<span role='link' id=${album.id} tabindex='0' onclick='onAlbumClickHandler(this)'>
+      					<img src='${album.pathToPicture}'>
+      					<div class='gridViewInfo'>${album.title}</div>
+      					</span>
+      				</div>`
+          ).join('')
+          }
+    }
+
+    const source = document.querySelector('.searchInput');
+    source.addEventListener('input', typeHandler)
+    source.addEventListener('propertychange', typeHandler)
+      break;
   }
 })

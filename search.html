@@ -5,7 +5,11 @@
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="assets/css/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
   <script src="js/includes.js"></script>
+  <script src="sweetalert2.all.min.js"></script>
+  <script src="sweetalert2.min.js"></script>
+  <link rel="stylesheet" href="sweetalert2.min.css">
   <script src="js/script.js"></script>
   <title></title>
 </head>
@@ -17,14 +21,36 @@
       <div id="mainViewContainer">
         <div class="searchContainer">
 
-          <h4>Search for an artist, album or song</h4>
-          <input type="text" class="searchInput" value="" placeholder="Start typing..." onfocus="this.value = this.value">
+          <h4>Søg på et album, en sang eller en kunstner</h4>
+          <input type="search" class="searchInput" value="" placeholder="Søg her...">
+          <div class="tracklistContainer borderBottom">
+          	<h2>Sange</h2>
+          	<ul class="tracklist">
+            </ul>
+          </div>
+
+
+          <div class="artistsContainer borderBottom">
+	            <h2>Artister</h2>
+              <div class="artistsInnerContainer">
+
+              </div>
+          </div>
+
+        <div class="gridViewContainer">
+        	<h2>Album</h2>
+          <div class="gridViewInnerContainer">
+
+          </div>
+      </div>
+
+      <nav class="optionsMenu">
+        <button type="button" class="item playlist" id=playlistOptions onclick="addToPlaylist()">Tilføj til playliste</button>
+      </nav>
+
+
 
         </div>
-
-
-
-
       </div>
     </div>
   </div>

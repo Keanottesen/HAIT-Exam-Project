@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>artist</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="js/includes.js"></script>
+    <script src="sweetalert2.all.min.js"></script>
+    <script src="sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
+    <script src="js/script.js"></script>
+  </head>
+  <body>
+    <div id="mainContainer">
+      <div id="topContainer">
+        <div id="nav-placeholder"></div>
+        <div id="mainViewContainer">
+
+    <div class="entityInfo borderBottom">
+    	<div class="centerSection">
+    		<div class="artistInfo">
+    			<h1 class="artistName"></h1>
+    			<div class="headerButtons">
+    				<button class="button green" onclick="playFirstSong()">PLAY</button>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+
+    <div class="tracklistContainer borderBottom">
+    	<h2>SONGS</h2>
+    	<ul class="tracklist">
+    	</ul>
+    </div>
+
+    <div class="gridViewContainer">
+    	<h2>ALBUMS</h2>
+      <div class="gridViewInnerContainer"></div>
+    </div>
+
+    <nav class="optionsMenu">
+      <button type="button" class="item playlist" id=playlistOptions onclick="addToPlaylist()">Tilføj til playliste</button>
+    </nav>
+
+  </div>
+</div>
+<div id="nowPlaying-placeholder"></div>
+</div>
+
+  </body>
+</html>
