@@ -1,13 +1,3 @@
-var currentPlaylist = [];
-var shufflePlaylist = [];
-var tempPlaylist = [];
-var audioElement;
-var mouseDown = false;
-var currentIndex = 0;
-var repeat = false;
-var shuffle = false;
-var userLoggedIn;
-var timer;
 let state = null;
 let playlists = JSON.parse(localStorage.playlists);
 let albums = JSON.parse(localStorage.albums);
@@ -67,21 +57,6 @@ function pushToLocalStorage(object, name) {
   const storageObject = JSON.stringify(object);
   localStorage.setItem(name, storageObject);
 }
-
-
-
-
-$(document).click(function(click) {
-  var target = $(click.target);
-
-  if (!target.hasClass("item") && !target.hasClass("optionsButton")) {
-    hideOptionsMenu();
-  }
-});
-
-$(window).scroll(function() {
-  hideOptionsMenu();
-});
 
 function toObject(arr) {
   var rv = {};
@@ -236,21 +211,6 @@ function logout() {
 
 }
 
-function openPage(url) {
-
-  if (timer != null) {
-    clearTimeout(timer);
-  }
-
-  if (url.indexOf("?") == -1) {
-    url = url + "?";
-  }
-
-  var encodedUrl = encodeURI(url + "&userLoggedIn=" + userLoggedIn);
-  $("#mainContent").load(encodedUrl);
-  $("body").scrollTop(0);
-  history.pushState(null, null, url);
-}
 
 
 function createPlaylist() {
@@ -352,81 +312,9 @@ function showOptionsMenu(button, songId) {
 }
 
 
-function formatTime(seconds) {
-  var time = Math.round(seconds);
-  var minutes = Math.floor(time / 60); //Rounds down
-  var seconds = time - (minutes * 60);
-
-  var extraZero = (seconds < 10) ? "0" : "";
-
-  return minutes + ":" + extraZero + seconds;
-}
-
-function updateTimeProgressBar(audio) {
-  $(".progressTime.current").text(formatTime(audio.currentTime));
-  $(".progressTime.remaining").text(formatTime(audio.duration - audio.currentTime));
-
-  var progress = audio.currentTime / audio.duration * 100;
-  $(".playbackBar .progress").css("width", progress + "%");
-}
-
-function updateVolumeProgressBar(audio) {
-  var volume = audio.volume * 100;
-  $(".volumeBar .progress").css("width", volume + "%");
-}
-
-function playFirstSong() {
-  setTrack(tempPlaylist[0], tempPlaylist, true);
-}
-
-
-function Audio() {
-
-  this.currentlyPlaying;
-  this.audio = document.createElement('audio');
-
-  this.audio.addEventListener("ended", function() {
-    nextSong();
-  });
-
-  this.audio.addEventListener("canplay", function() {
-    //'this' refers to the object that the event was called on
-    var duration = formatTime(this.duration);
-    $(".progressTime.remaining").text(duration);
-  });
-
-  this.audio.addEventListener("timeupdate", function() {
-    if (this.duration) {
-      updateTimeProgressBar(this);
-    }
-  });
-
-  this.audio.addEventListener("volumechange", function() {
-    updateVolumeProgressBar(this);
-  });
-
-  this.setTrack = function(track) {
-    this.currentlyPlaying = track;
-    this.audio.src = track.path;
-  }
-
-  this.play = function() {
-    this.audio.play();
-  }
-
-  this.pause = function() {
-    this.audio.pause();
-  }
-
-  this.setTime = function(seconds) {
-    this.audio.currentTime = seconds;
-  }
-
-}
-
-
 //all rendering before ducoument is ready
 $(document).ready(function() {
+
 
   const userLoggedIn = users.find(x => x.active === true);
   setTimeout(function(){document.getElementById('activeUserName').innerHTML = userLoggedIn.firstName + " " + userLoggedIn.lastName}, 50);
@@ -496,7 +384,7 @@ $(document).ready(function() {
 
       					<div class='trackOptions'>
       						<input type='hidden' class='songId' value=''>
-      						<img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this)'>
+      						<img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this, ${song.id})'>
       					</div>
 
       					<div class='trackDuration'>
