@@ -463,139 +463,139 @@ let playlists = [
 	},
 	{
 		'id': 8,
-		'name': 'Running Songs',
+		'name': 'The Best Songs',
 		'ownerUserId': '2',
 		'dateCreated': '2017-08-27 00:00:00'
 	},
 	{
 		'id': 9,
-		'name': 'Classics',
+		'name': 'Hyklere',
 		'ownerUserId': '2',
 		'dateCreated': '2017-08-27 00:00:00'
 	},
 	{
 		'id': 10,
-		'name': 'Party',
+		'name': 'Mors sange',
 		'ownerUserId': '3',
 		'dateCreated': '2017-08-27 00:00:00'
 	},
 	{
 		'id': 11,
-		'name': 'This is a test',
+		'name': 'Old school',
 		'ownerUserId': '3',
 		'dateCreated': '2017-12-04 00:00:00'
 	},
 	{
 		'id': 12,
-		'name': 'Bulldozer',
+		'name': 'Old but gold',
 		'ownerUserId': '3',
 		'dateCreated': '2017-12-04 00:00:00'
 	},
 	{
 		'id': 13,
-		'name': 'Playlist2',
+		'name': 'Playlist3',
 		'ownerUserId': '3',
 		'dateCreated': '2017-08-27 00:00:00'
 	},
 	{
 		'id': 14,
-		'name': 'Running Songs',
+		'name': 'New music',
 		'ownerUserId': '3',
 		'dateCreated': '2017-08-27 00:00:00'
 	},
 	{
 		'id': 15,
-		'name': 'Classics',
+		'name': 'Syndere',
 		'ownerUserId': '4',
 		'dateCreated': '2017-08-27 00:00:00'
 	},
 	{
 		'id': 16,
-		'name': 'Party',
+		'name': 'Feelings',
 		'ownerUserId': '4',
 		'dateCreated': '2017-08-27 00:00:00'
 	},
 	{
 		'id': 17,
-		'name': 'This is a test',
+		'name': 'Fredag aften',
 		'ownerUserId': '4',
 		'dateCreated': '2017-12-04 00:00:00'
 	},
 	{
 		'id': 18,
-		'name': 'Bulldozer',
+		'name': 'FEST!',
 		'ownerUserId': '4',
 		'dateCreated': '2017-12-04 00:00:00'
 	},
 	{
 		'id': 19,
-		'name': 'Playlist2',
+		'name': 'Hip hop',
 		'ownerUserId': '4',
 		'dateCreated': '2017-08-27 00:00:00'
 	},
 	{
 		'id': 20,
-		'name': 'Running Songs',
+		'name': 'POP',
 		'ownerUserId': '5',
 		'dateCreated': '2017-08-27 00:00:00'
 	},
 	{
 		'id': 21,
-		'name': 'Classics',
+		'name': 'Cry your heart out',
 		'ownerUserId': '5',
 		'dateCreated': '2017-08-27 00:00:00'
 	},
 	{
 		'id': 22,
-		'name': 'Party',
+		'name': 'School',
 		'ownerUserId': '5',
 		'dateCreated': '2017-08-27 00:00:00'
 	},
 	{
 		'id': 23,
-		'name': 'This is a test',
+		'name': 'Koncentration',
 		'ownerUserId': '5',
 		'dateCreated': '2017-12-04 00:00:00'
 	},
 	{
 		'id': 24,
-		'name': 'Bulldozer',
+		'name': 'Yndlings',
 		'ownerUserId': '5',
 		'dateCreated': '2017-12-04 00:00:00'
 	},
 	{
 		'id': 25,
-		'name': 'Playlist2',
+		'name': 'Søsters',
 		'ownerUserId': '1',
 		'dateCreated': '2017-08-27 00:00:00'
 	},
 	{
 		'id': 26,
-		'name': 'Running Songs',
+		'name': 'den bedste',
 		'ownerUserId': '1',
 		'dateCreated': '2017-08-27 00:00:00'
 	},
 	{
 		'id': 27,
-		'name': 'Classics',
+		'name': 'poppen',
 		'ownerUserId': '1',
 		'dateCreated': '2017-08-27 00:00:00'
 	},
 	{
 		'id': 28,
-		'name': 'Party',
+		'name': 'Dansk',
 		'ownerUserId': '1',
 		'dateCreated': '2017-08-27 00:00:00'
 	},
 	{
 		'id': 29,
-		'name': 'This is a test',
+		'name': 'Money',
 		'ownerUserId': '1',
 		'dateCreated': '2017-12-04 00:00:00'
 	},
 	{
 		'id': 32,
-		'name': 'Bulldozer',
+		'name': 'Fokus',
 		'ownerUserId': '1',
 		'dateCreated': '2017-12-04 00:00:00'
 	},

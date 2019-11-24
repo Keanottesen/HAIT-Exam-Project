@@ -68,7 +68,7 @@ function toObject(arr) {
 
 function removeFromPlaylist() {
 
-  const userLoggedIn = users.find(x => x.active === true);
+  let userLoggedIn = users.find(x => x.active === true);
   const songId = JSON.parse(localStorage.getItem("state")).song_id;
   const playlistId = JSON.parse(localStorage.getItem("state")).playlist_id;
 
@@ -89,11 +89,10 @@ function removeFromPlaylist() {
 
 function addToPlaylist() {
 
-  const userLoggedIn = users.find(x => x.active === true);
+  let userLoggedIn = users.find(x => x.active === true);
 
-//when the playlist datastructure is right
-  //const userPlaylists = playlists.map(x => x.owner == userLoggedIn.userName)
-  const playlistNames = playlists.map(x => x.name);
+  let userPlaylists = playlists.filter(x => x.ownerUserId == userLoggedIn.id);
+  const playlistNames = userPlaylists.map(x => x.name);
   const newNames = toObject(playlistNames);
   (async () => {
     var {value: newSongToPlaylist} = await Swal.fire({
@@ -103,7 +102,7 @@ function addToPlaylist() {
     inputPlaceholder: 'Vælg din playliste',
     background: '#181818',
     icon: 'question',
-    confirmButtonText: 'Skab din playliste',
+    confirmButtonText: 'Tilføj denne sang til din playliste',
     confirmButtonColor: '#2FBD5A',
     inputValidator: (value) => {
         if (!value) {
@@ -112,7 +111,8 @@ function addToPlaylist() {
       }
   })
 
-    const choosenPlaylist = playlists[newSongToPlaylist];
+    const choosenPlaylist = userPlaylists[newSongToPlaylist];
+
     const songId = JSON.parse(localStorage.getItem("state")).song_id
 
         playlistSongs.push({
@@ -131,7 +131,7 @@ function updateEmail() {
 
   const newEmail = document.querySelectorAll('.updatedEmail')[0].value;
 
-  const userLoggedIn = users.find(x => x.active === true);
+  let userLoggedIn = users.find(x => x.active === true);
 
   let usersArray = users
 
@@ -160,7 +160,7 @@ function updatePassword() {
   const new1Password = document.querySelectorAll('.newPassword1')[0].value;
   const new2Password = document.querySelectorAll('.newPassword2')[0].value;
 
-  const userLoggedIn = users.find(x => x.active === true);
+  let userLoggedIn = users.find(x => x.active === true);
 
   if (new1Password == new2Password) {
 
@@ -188,7 +188,7 @@ function updatePassword() {
 
 function logout() {
 
-  const userLoggedIn = users.find(x => x.active === true);
+  let userLoggedIn = users.find(x => x.active === true);
   for (var i = 0; i < users.length; i++) {
     if (users[i].id == userLoggedIn.id) {
         users.splice(i, 1);
@@ -232,7 +232,7 @@ function createPlaylist() {
   }
   })
 
-  	const userLoggedIn = users.find(x => x.active === true);
+  	let userLoggedIn = users.find(x => x.active === true);
 
     if (newPlaylist != null) {
   		playlists.push({
@@ -316,7 +316,7 @@ function showOptionsMenu(button, songId) {
 $(document).ready(function() {
 
 
-  const userLoggedIn = users.find(x => x.active === true);
+  let userLoggedIn = users.find(x => x.active === true);
   setTimeout(function(){document.getElementById('activeUserName').innerHTML = userLoggedIn.firstName + " " + userLoggedIn.lastName}, 50);
 
 
@@ -419,7 +419,12 @@ $(document).ready(function() {
       ).join('')
       break;
     case '/yourMusic':
-      document.querySelector('.playlistsGridContainer').innerHTML = JSON.parse(localStorage.playlists).map(playlist =>
+
+    let userLoggedIn = users.find(x => x.active === true);
+
+    let userPlaylists = playlists.filter(x => x.ownerUserId == userLoggedIn.id);
+
+      document.querySelector('.playlistsGridContainer').innerHTML = userPlaylists.map(playlist =>
         `      <div id='${playlist.id}'class='gridViewItem' role='link' tabindex='0'
 										onclick='playlistOnclickHandler(this)'>
 									<div class='playlistImage'>
@@ -469,8 +474,10 @@ $(document).ready(function() {
 
       break;
 		case '/settings':
-		const userLoggedIn = users.find(x => x.active === true);
-		document.getElementById('activeUserName').innerHTML = userLoggedIn.firstName + ' ' + userLoggedIn.lastName;
+
+		let userLoggedIn2 = users.find(x => x.active === true);
+
+		document.getElementById('activeUserName').innerHTML = userLoggedIn2.firstName + ' ' + userLoggedIn2.lastName;
 			break;
     case '/search':
     const typeHandler = function(e) {
