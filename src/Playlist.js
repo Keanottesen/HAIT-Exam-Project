@@ -16,6 +16,7 @@ class Playlist extends Utility {
     * @property {integer} ownerUserId playlist ownerUserId
     * @property {DateTime} dateCreated playlist dateCreated
     */
+    super('Playlist');
     this.id = id;
     this.name = name;
     this.ownerUserId = ownerUserId;
@@ -44,8 +45,13 @@ const songIds = playlistSongs.filter(x => x.playlistId == playlistId).map(item =
  */
 const songsInPlaylist = songs.filter(x => songIds.includes(x.id))
 
-$(document).ready(function() {
 
+/** @function
+ * @name playlistRendering
+ * @returns void
+ * @description This function is populating the view with all song in the playlist
+ */
+$(document).ready(function() {
 document.getElementById('playlistName').innerHTML = playlistProperty.name;
 document.getElementById('playlistOwner').innerHTML = playlistProperty.owner;
 document.getElementById('playlistSongs').innerHTML = songIds.length + ' songs';

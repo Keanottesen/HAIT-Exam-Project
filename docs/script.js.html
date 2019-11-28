@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: script.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: script.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * Array of grades
  * @type {Object}
  */
@@ -6,7 +34,7 @@ let state = null;
 
 /**
  * Array of grades
- * @type {Array<objects>}
+ * @type {Array&lt;objects>}
  */
 let playlists = JSON.parse(localStorage.playlists);
 let albums = JSON.parse(localStorage.albums);
@@ -109,7 +137,7 @@ function pushToLocalStorage(object, name) {
  */
 function toObject(arr) {
   var rv = {};
-  for (var i = 0; i < arr.length; ++i)
+  for (var i = 0; i &lt; arr.length; ++i)
     if (arr[i] !== undefined) rv[i] = arr[i];
   return rv;
 }
@@ -126,9 +154,9 @@ function removeFromPlaylist() {
   const songId = JSON.parse(localStorage.getItem("state")).song_id;
   const playlistId = JSON.parse(localStorage.getItem("state")).playlist_id;
 
-  const deletedPlaylistSong = playlistSongs.find(x => x.playlistId == playlistId && x.songId == songId);
+  const deletedPlaylistSong = playlistSongs.find(x => x.playlistId == playlistId &amp;&amp; x.songId == songId);
 
-  for (var i = 0; i < playlistSongs.length; i++) {
+  for (var i = 0; i &lt; playlistSongs.length; i++) {
 
     if (playlistSongs[i].id == deletedPlaylistSong.id) {
         playlistSongs.splice(i, 1);
@@ -201,7 +229,7 @@ function updateEmail() {
   let userLoggedIn = users.find(x => x.active === true);
   let usersArray = users
 
-  for (var i = 0; i < usersArray.length; i++) {
+  for (var i = 0; i &lt; usersArray.length; i++) {
     if (usersArray[i].id == userLoggedIn.id) {
         usersArray.splice(i, 1);
     }
@@ -235,7 +263,7 @@ function updatePassword() {
   if (new1Password == new2Password) {
     let usersArray = users
 
-    for (var i = 0; i < usersArray.length; i++) {
+    for (var i = 0; i &lt; usersArray.length; i++) {
       if (usersArray[i].id == userLoggedIn.id) {
           usersArray.splice(i, 1);
       }
@@ -262,7 +290,7 @@ function updatePassword() {
  */
 function logout() {
   let userLoggedIn = users.find(x => x.active === true);
-  for (var i = 0; i < users.length; i++) {
+  for (var i = 0; i &lt; users.length; i++) {
     if (users[i].id == userLoggedIn.id) {
         users.splice(i, 1);
     }
@@ -341,7 +369,7 @@ function deletePlaylist() {
     }).then(() => {
 
       const deletedPlaylistId = JSON.parse(localStorage.getItem("state")).playlist_id
-      for (var i = 0; i < playlists.length; i++) {
+      for (var i = 0; i &lt; playlists.length; i++) {
 
         if (playlists[i].id == deletedPlaylistId) {
           console.log(playlists[i]);
@@ -400,14 +428,14 @@ $(document).ready(function() {
       //render data in html
       console.log(albums);
       document.querySelector('.gridViewContainer').innerHTML = albums.map(album =>
-        `<div class='gridViewItem'>
-			 <span id=${album.id} role='link' tabindex='0' onclick='onAlbumClickHandler(this)'>
-					 <img src='${album.pathToPicture}'>
-					 <div class='gridViewInfo '>
+        `&lt;div class='gridViewItem'>
+			 &lt;span id=${album.id} role='link' tabindex='0' onclick='onAlbumClickHandler(this)'>
+					 &lt;img src='${album.pathToPicture}'>
+					 &lt;div class='gridViewInfo '>
 							 ${album.title}
-					 </div>
-				 </span>
-				 </div>`
+					 &lt;/div>
+				 &lt;/span>
+				 &lt;/div>`
       ).join('')
       break;
     case '/yourMusic':
@@ -417,15 +445,15 @@ $(document).ready(function() {
     let userPlaylists = playlists.filter(x => x.ownerUserId == userLoggedIn.id);
 
       document.querySelector('.playlistsGridContainer').innerHTML = userPlaylists.map(playlist =>
-        `      <div id='${playlist.id}'class='gridViewItem' role='link' tabindex='0'
+        `      &lt;div id='${playlist.id}'class='gridViewItem' role='link' tabindex='0'
 										onclick='playlistOnclickHandler(this)'>
-									<div class='playlistImage'>
-										<img src='assets/images/icons/playlist.png'>
-									</div>
-									<div class='gridViewInfo'>
+									&lt;div class='playlistImage'>
+										&lt;img src='assets/images/icons/playlist.png'>
+									&lt;/div>
+									&lt;div class='gridViewInfo'>
 									${playlist.name}
-									</div>
-								</div>`).join('')
+									&lt;/div>
+								&lt;/div>`).join('')
       break;
 
 		case '/settings':
@@ -445,46 +473,46 @@ $(document).ready(function() {
           if (searchString !== '') {
             // render songs
             document.querySelector('.tracklist').innerHTML = songsMacthingSearchString.map((song, index) =>
-              `      <li class='tracklistRow'>
-                      <div class='trackCount'>
-                        <img class='play' src='assets/images/icons/play-white.png' onclick=''>
-                        <span class='trackNumber'>${index + 1}</span>
-                      </div>
-                      <div class='trackInfo'>
-                        <span class='trackName'>${song.title}</span>
-                        <span class='artistName'>${artist.find(x => x.id === song.artistId).name}</span>
-                      </div>
+              `      &lt;li class='tracklistRow'>
+                      &lt;div class='trackCount'>
+                        &lt;img class='play' src='assets/images/icons/play-white.png' onclick=''>
+                        &lt;span class='trackNumber'>${index + 1}&lt;/span>
+                      &lt;/div>
+                      &lt;div class='trackInfo'>
+                        &lt;span class='trackName'>${song.title}&lt;/span>
+                        &lt;span class='artistName'>${artist.find(x => x.id === song.artistId).name}&lt;/span>
+                      &lt;/div>
 
-                      <div class='trackOptions'>
-                        <input type='hidden' class='songId' value='" . $albumSong->getId() . "'>
-                        <img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this, ${song.id})'>
-                      </div>
+                      &lt;div class='trackOptions'>
+                        &lt;input type='hidden' class='songId' value='" . $albumSong->getId() . "'>
+                        &lt;img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this, ${song.id})'>
+                      &lt;/div>
 
-                      <div class='trackDuration'>
-                        <span class='duration'>${song.duration}</span>
-                      </div>
-                    </li>`
+                      &lt;div class='trackDuration'>
+                        &lt;span class='duration'>${song.duration}&lt;/span>
+                      &lt;/div>
+                    &lt;/li>`
             ).join('')
 
           //render artist
           document.querySelector('.artistsInnerContainer').innerHTML = artistsMacthingSearchString.map((artist, index) =>
-          ` <div class='searchResultRow'>
-              <div class='artistName'>
-                <span role='link' id=${artist.id} tabindex='0' onclick='onArtistClickHandler(this)'>
+          ` &lt;div class='searchResultRow'>
+              &lt;div class='artistName'>
+                &lt;span role='link' id=${artist.id} tabindex='0' onclick='onArtistClickHandler(this)'>
                     ${artist.name}
-                </span>
-              </div>
-            </div>`
+                &lt;/span>
+              &lt;/div>
+            &lt;/div>`
           ).join('')
 
           //render albums
           document.querySelector('.gridViewInnerContainer').innerHTML = albumsMacthingSearchString.map((album, index) =>
-          ` <div class='gridViewItem'>
-      				<span role='link' id=${album.id} tabindex='0' onclick='onAlbumClickHandler(this)'>
-      					<img src='${album.pathToPicture}'>
-      					<div class='gridViewInfo'>${album.title}</div>
-      					</span>
-      				</div>`
+          ` &lt;div class='gridViewItem'>
+      				&lt;span role='link' id=${album.id} tabindex='0' onclick='onAlbumClickHandler(this)'>
+      					&lt;img src='${album.pathToPicture}'>
+      					&lt;div class='gridViewInfo'>${album.title}&lt;/div>
+      					&lt;/span>
+      				&lt;/div>`
           ).join('')
           }
     }
@@ -495,3 +523,26 @@ $(document).ready(function() {
       break;
   }
 })
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Utility.html">Utility</a></li></ul><h3>Classes</h3><ul><li><a href="global.html#Album">Album</a></li><li><a href="global.html#Artist">Artist</a></li><li><a href="global.html#Playlist">Playlist</a></li><li><a href="Song.html">Song</a></li><li><a href="User.html">User</a></li><li><a href="Utility.html">Utility</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addToPlaylist">addToPlaylist</a></li><li><a href="global.html#artist">artist</a></li><li><a href="global.html#artistAlbums">artistAlbums</a></li><li><a href="global.html#artistId">artistId</a></li><li><a href="global.html#artistSongs">artistSongs</a></li><li><a href="global.html#createPlaylist">createPlaylist</a></li><li><a href="global.html#deletePlaylist">deletePlaylist</a></li><li><a href="global.html#genericRendering">genericRendering</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#onAlbumClickHandler">onAlbumClickHandler</a></li><li><a href="global.html#onArtistClickHandler">onArtistClickHandler</a></li><li><a href="global.html#playlistId">playlistId</a></li><li><a href="global.html#playlistOnclickHandler">playlistOnclickHandler</a></li><li><a href="global.html#playlistRendering">playlistRendering</a></li><li><a href="global.html#playlists">playlists</a></li><li><a href="global.html#pushToLocalStorage">pushToLocalStorage</a></li><li><a href="global.html#removeFromPlaylist">removeFromPlaylist</a></li><li><a href="global.html#renderingAlbum">renderingAlbum</a></li><li><a href="global.html#setState">setState</a></li><li><a href="global.html#showOptionsMenu">showOptionsMenu</a></li><li><a href="global.html#songIds">songIds</a></li><li><a href="global.html#songOnclickHandler">songOnclickHandler</a></li><li><a href="global.html#songs">songs</a></li><li><a href="global.html#songsInPlaylist">songsInPlaylist</a></li><li><a href="global.html#state">state</a></li><li><a href="global.html#toObject">toObject</a></li><li><a href="global.html#updateEmail">updateEmail</a></li><li><a href="global.html#updatePassword">updatePassword</a></li><li><a href="global.html#.innerHTML">.innerHTML</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Thu Nov 28 2019 18:38:50 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

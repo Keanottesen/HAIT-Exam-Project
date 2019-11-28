@@ -14,6 +14,7 @@ class Artist extends Utility {
     * @property {integer} id artist id
     * @property {string} name artist name
     */
+    super('Artist');
     this.id = id;
     this.name = name;
   }

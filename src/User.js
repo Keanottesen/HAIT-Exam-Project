@@ -18,6 +18,7 @@ class User extends Utility {
     * @property {string} password playlist password
     * @property {boolean} active playlist active
     */
+    super('User');
     this.id = id;
     this.firstName = firstName;
     this.userName = userName;

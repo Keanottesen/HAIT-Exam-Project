@@ -19,6 +19,7 @@ class Song extends Utility {
     * @property {string} duration song duration
     * @property {integer} plays song plays
     */
+    super('Song');
     this.id = id;
     this.title = title;
     this.artistId = artistId;
