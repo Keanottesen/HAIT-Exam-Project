@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: Utility.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,42 +17,52 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: Utility.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
     <section>
-        <article><h1>HAIT-Exam-Project</h1>
-<p>This is my project for my examination in programming</p>
-<h1>problems that occurred during development process</h1>
-<ol>
-<li>jquery.min.js:2 Access to XMLHttpRequest at 'file:///Users/keanottesen/Documents/GitHub/HAIT-Exam-Project/navBarContainer.html' from origin 'null' has been blocked by CORS policy: Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, https.</li>
-</ol>
-<p>Solution: run on local server as chrome does not allow cross origin</p></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Class to instantiate all other classes
+  * @class
+ */
+class Utility {
+  /**
+   *
+   * @param {Object} Utility Information about the Utility
+   */
+    constructor(classtype) {
+      this.classtype = classtype;
+    }
+
+    /**
+     * @property {Function} pushToLocalStorage A function that pushes data to local storage
+     * @returns void
+     */
+    pushToLocalStorage(object, name) {
+       let storageObject = JSON.stringify(object);
+       localStorage.setItem(name, storageObject);
+     }
+     
+    get state() {
+      return JSON.parse(localStorage.state);
+    }
+
+}
+
+
+/**
+ * A module that enables all other modules to push to local storage
+ * @module Utility
+ */
+export default Utility;
+</code></pre>
+        </article>
     </section>
-
-
 
 
 

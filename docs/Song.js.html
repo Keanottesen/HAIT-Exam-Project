@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: Song.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,42 +17,56 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: Song.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
     <section>
-        <article><h1>HAIT-Exam-Project</h1>
-<p>This is my project for my examination in programming</p>
-<h1>problems that occurred during development process</h1>
-<ol>
-<li>jquery.min.js:2 Access to XMLHttpRequest at 'file:///Users/keanottesen/Documents/GitHub/HAIT-Exam-Project/navBarContainer.html' from origin 'null' has been blocked by CORS policy: Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, https.</li>
-</ol>
-<p>Solution: run on local server as chrome does not allow cross origin</p></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>import Utility from './Utility.js';
+
+/**
+ * Class to create a Song object
+  * @class
+ */
+class Song extends Utility {
+  /**
+   *
+   * @param {Object} SongInfo Information about the Song
+   */
+  constructor(id, name, artistId, albumId, genreId, duration, plays) {
+    /**
+    * @property {integer} id song id
+    * @property {string} title song title
+    * @property {integer} artistId song artistId
+    * @property {integer} albumId song albumId
+    * @property {integer} genreId song genreId
+    * @property {string} duration song duration
+    * @property {integer} plays song plays
+    */
+    this.id = id;
+    this.title = title;
+    this.artistId = artistId;
+    this.albumId = albumId;
+    this.genreId = genreId;
+    this.duration = duration;
+    this.plays = plays;
+  }
+
+  /**
+   * @property {Function} greet A greeting with the name and age
+   * @returns void
+   */
+
+}
+
+const o = new Song();
+</code></pre>
+        </article>
     </section>
-
-
 
 
 
