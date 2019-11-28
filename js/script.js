@@ -238,7 +238,7 @@ function createPlaylist() {
   		playlists.push({
   			    'id': JSON.parse(localStorage.playlists).length + 1,
   			    'name': newPlaylist,
-  			    'owner': userLoggedIn.userName,
+  			    'ownerUserId': userLoggedIn.id,
   			    'dateCreated': new Date()
   			  })
 
@@ -281,21 +281,13 @@ function deletePlaylist() {
   })()
 }
 
-function hideOptionsMenu() {
-  var menu = $(".optionsMenu");
-  if (menu.css("display") != "none") {
-    menu.css("display", "none");
-  }
-}
 
 function showOptionsMenu(button, songId) {
 
   songOnclickHandler(songId);
 
-  var songId = $(button).prevAll(".songId").val();
   var menu = $(".optionsMenu");
   var menuWidth = menu.width();
-  menu.find(".songId").val(songId);
 
   var scrollTop = $(window).scrollTop(); //Distance from top of window to top of document
   var elementOffset = $(button).offset().top; //Distance from top of document
@@ -308,7 +300,6 @@ function showOptionsMenu(button, songId) {
     "left": left - menuWidth + "px",
     "display": "inline"
   });
-
 }
 
 
