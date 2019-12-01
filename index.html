@@ -6,9 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/register.css">
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="src/register.js"></script>
-	<script src="handlers/login-handler.js"></script>
-	<script src="handlers/register-handler.js"></script>
+	<script src="src/User.js"></script>
 	<script src="src/localStorage.js"></script>
 </head>
 
@@ -18,7 +16,7 @@
 		<div id="loginContainer">
 
 			<div id="inputContainer">
-				<form name="loginForm" id="loginForm" onSubmit="validateLogin()" action="browse.html">
+				<form name="loginForm" class="loginForm">
 					<h2>Log ind på din profil</h2>
 					<p>
 						<label for="loginEmail">Email</label>
@@ -29,17 +27,19 @@
 						<input id="loginPassword" name="loginPassword" type="password" placeholder="Indtast dit password" required>
 					</p>
 
-					<button type="submit" name="loginButton">log ind</button>
+				</form>
+				<div class="loginForm">
+					<button onclick="validateLogin()" name="loginButton">log ind</button>
 
 					<div class="hasAccountText">
 						<span id="hideLogin">Har du ikke en profil endnu? Lav en her</span>
 					</div>
-
-				</form>
-
+				</div>
 
 
-				<form id="registerForm" action="browse.html" onsubmit="return createUser()">
+
+
+				<form id="registerForm" action="browse.html" onsubmit="createUser()">
 					<h2>Opret din gratis profil</h2>
 					<p>
 						<label for="username">Brugernavn</label>

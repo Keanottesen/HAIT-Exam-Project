@@ -1,12 +1,13 @@
 /**
- * Array of grades
+ * Array of objects
  * @type {Object}
  */
 let state = null;
 
 /**
- * Array of grades
+ * Array of objects
  * @type {Array<objects>}
+ * @description global variables
  */
 let playlists = JSON.parse(localStorage.playlists);
 let albums = JSON.parse(localStorage.albums);
@@ -15,6 +16,10 @@ let songs = JSON.parse(localStorage.songs);
 let users = JSON.parse(localStorage.users);
 let playlistSongs = JSON.parse(localStorage.playlistSongs);
 
+
+if (users.find(x => x.active === true) === undefined) {
+  window.location = 'index.html';
+}
 
 
 if (localStorage.getItem("state") === null) {
@@ -31,6 +36,10 @@ if (localStorage.getItem("state") === null) {
 
   state = JSON.parse(retrievedObject);
 }
+
+$(function(){
+  $("#nav-placeholder").load("navBarContainer.html");
+});
 
 
 /**
@@ -114,81 +123,6 @@ function toObject(arr) {
   return rv;
 }
 
-/**
- * @function
- * @name removeFromPlaylist
- * @returns {void}
- * @description this function is handling the logic when a user want to remove a playlist from his collection on /yourMusic
- */
-function removeFromPlaylist() {
-
-  let userLoggedIn = users.find(x => x.active === true);
-  const songId = JSON.parse(localStorage.getItem("state")).song_id;
-  const playlistId = JSON.parse(localStorage.getItem("state")).playlist_id;
-
-  const deletedPlaylistSong = playlistSongs.find(x => x.playlistId == playlistId && x.songId == songId);
-
-  for (var i = 0; i < playlistSongs.length; i++) {
-
-    if (playlistSongs[i].id == deletedPlaylistSong.id) {
-        playlistSongs.splice(i, 1);
-    }
-  }
-
-  const storageObject = JSON.stringify(playlistSongs);
-  localStorage.setItem('playlistSongs', storageObject);
-  location.reload();
-
-}
-
-
-/**
- * @async
- * @function
- * @name addToPlaylist
- * @returns {(string|void)} if the user fails to provide a valid playlist when adding a song to a playlist this function will return a string.
- * @description this function is handling the logic when a user want to add a song to a playlist.
- */
-function addToPlaylist() {
-
-  let userLoggedIn = users.find(x => x.active === true);
-
-  let userPlaylists = playlists.filter(x => x.ownerUserId == userLoggedIn.id);
-  const playlistNames = userPlaylists.map(x => x.name);
-  const newNames = toObject(playlistNames);
-
-  (async () => {
-    var {value: newSongToPlaylist} = await Swal.fire({
-    title: 'Tilføj til playliste',
-    input: 'select',
-    inputOptions: newNames,
-    inputPlaceholder: 'Vælg din playliste',
-    background: '#181818',
-    icon: 'question',
-    confirmButtonText: 'Tilføj denne sang til din playliste',
-    confirmButtonColor: '#2FBD5A',
-    inputValidator: (value) => {
-        if (!value) {
-          return 'Du bliver nødt til at vælge en playliste';
-        };
-      }
-  })
-
-    const choosenPlaylist = userPlaylists[newSongToPlaylist];
-
-    const songId = JSON.parse(localStorage.getItem("state")).song_id
-
-        playlistSongs.push({
-                'id': playlistSongs.length,
-                'playlistId': choosenPlaylist.id,
-                'songId': songId
-            })
-
-        const storageObject = JSON.stringify(playlistSongs);
-        localStorage.setItem('playlistSongs', storageObject);
-
-})()
-}
 
 /**
  * @function
@@ -284,75 +218,79 @@ function logout() {
 
 
 /**
+ * @function
+ * @name removeFromPlaylist
+ * @returns {void}
+ * @description this function is handling the logic when a user want to remove a playlist from his collection on /yourMusic
+ */
+function removeFromPlaylist() {
+
+  let userLoggedIn = users.find(x => x.active === true);
+  const songId = JSON.parse(localStorage.getItem("state")).song_id;
+  const playlistId = JSON.parse(localStorage.getItem("state")).playlist_id;
+
+  const deletedPlaylistSong = playlistSongs.find(x => x.playlistId == playlistId && x.songId == songId);
+
+  for (var i = 0; i < playlistSongs.length; i++) {
+
+    if (playlistSongs[i].id == deletedPlaylistSong.id) {
+        playlistSongs.splice(i, 1);
+    }
+  }
+
+  const storageObject = JSON.stringify(playlistSongs);
+  localStorage.setItem('playlistSongs', storageObject);
+  location.reload();
+
+}
+
+
+/**
  * @async
  * @function
- * @name createPlaylist
- * @returns {void}
- * @description this function is handling the logic when a user wants to create a playlist
+ * @name addToPlaylist
+ * @returns {(string|void)} if the user fails to provide a valid playlist when adding a song to a playlist this function will return a string.
+ * @description this function is handling the logic when a user want to add a song to a playlist.
  */
-function createPlaylist() {
+function addToPlaylist() {
+
+  let userLoggedIn = users.find(x => x.active === true);
+
+  let userPlaylists = playlists.filter(x => x.ownerUserId == userLoggedIn.id);
+  const playlistNames = userPlaylists.map(x => x.name);
+  const newNames = toObject(playlistNames);
+
   (async () => {
-    var {value: newPlaylist} = await Swal.fire({
-    title: 'Hvad skal din playlist hedde?',
-    input: 'text',
-    inputPlaceholder: 'Min playliste',
+    var {value: newSongToPlaylist} = await Swal.fire({
+    title: 'Tilføj til playliste',
+    input: 'select',
+    inputOptions: newNames,
+    inputPlaceholder: 'Vælg din playliste',
     background: '#181818',
     icon: 'question',
-    confirmButtonText: 'Skab din playliste',
+    confirmButtonText: 'Tilføj denne sang til din playliste',
     confirmButtonColor: '#2FBD5A',
-    inputAttributes: {
-    maxlength: 15,
-    autocapitalize: 'on',
-    autocorrect: 'off'
-  }
+    inputValidator: (value) => {
+        if (!value) {
+          return 'Du bliver nødt til at vælge en playliste';
+        };
+      }
   })
 
-  	let userLoggedIn = users.find(x => x.active === true);
-    if (newPlaylist != null) {
-  		playlists.push({
-  			    'id': JSON.parse(localStorage.playlists).length + 1,
-  			    'name': newPlaylist,
-  			    'ownerUserId': userLoggedIn.id,
-  			    'dateCreated': new Date()
-  			  })
-  				this.pushToLocalStorage(playlists, 'playlists');
-          location.reload();
-        };
+    const choosenPlaylist = userPlaylists[newSongToPlaylist];
+
+    const songId = JSON.parse(localStorage.getItem("state")).song_id
+
+        playlistSongs.push({
+                'id': playlistSongs.length,
+                'playlistId': choosenPlaylist.id,
+                'songId': songId
+            })
+
+        const storageObject = JSON.stringify(playlistSongs);
+        localStorage.setItem('playlistSongs', storageObject);
+
 })()
-  }
-
-  /**
-   * @async
-   * @function
-   * @name deletePlaylist
-   * @returns {void}
-   * @description this function is handling the logic when a user wants to delete a playlist
-   */
-function deletePlaylist() {
-
-    (async () => {
-
-      var deletedPlaylist = await Swal.fire({
-      title: 'Er du sikker?',
-      background: '#181818',
-      icon: 'info',
-      confirmButtonText: 'Slet min playliste',
-      confirmButtonColor: '#2FBD5A',
-    }).then(() => {
-
-      const deletedPlaylistId = JSON.parse(localStorage.getItem("state")).playlist_id
-      for (var i = 0; i < playlists.length; i++) {
-
-        if (playlists[i].id == deletedPlaylistId) {
-          console.log(playlists[i]);
-            playlists.splice(i, 1);
-        }
-      }
-      const storageObject = JSON.stringify(playlists);
-      localStorage.setItem('playlists', storageObject);
-      window.location = 'yourMusic.html';
-    })
-  })()
 }
 
 /**
@@ -390,11 +328,9 @@ function showOptionsMenu(button, songId) {
  * @returns void
  * @description This function is populating the view the respective variable content that is on each path
  */
-$(document).ready(function() {
+ $(document).ready(function() {
   let userLoggedIn = users.find(x => x.active === true);
   setTimeout(function(){document.getElementById('activeUserName').innerHTML = userLoggedIn.firstName + " " + userLoggedIn.lastName}, 50);
-
-
   switch (window.location.pathname) {
     case '/browse':
       //render data in html
@@ -436,7 +372,7 @@ $(document).ready(function() {
 			break;
     case '/search':
     const typeHandler = function(e) {
-
+      console.log(e);
         let searchString = e.target.value;
         const songsMacthingSearchString = songs.filter(x => x.title.includes(searchString))
         const albumsMacthingSearchString = albums.filter(x => x.title.includes(searchString))
@@ -447,7 +383,6 @@ $(document).ready(function() {
             document.querySelector('.tracklist').innerHTML = songsMacthingSearchString.map((song, index) =>
               `      <li class='tracklistRow'>
                       <div class='trackCount'>
-                        <img class='play' src='assets/images/icons/play-white.png' onclick=''>
                         <span class='trackNumber'>${index + 1}</span>
                       </div>
                       <div class='trackInfo'>
@@ -456,7 +391,6 @@ $(document).ready(function() {
                       </div>
 
                       <div class='trackOptions'>
-                        <input type='hidden' class='songId' value='" . $albumSong->getId() . "'>
                         <img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this, ${song.id})'>
                       </div>
 

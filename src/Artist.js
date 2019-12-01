@@ -1,10 +1,8 @@
-import Utility from './Utility.js';
-
 /**
  * Class to create a Artist object
   * @class
  */
-class Artist extends Utility {
+class Artist {
   /**
    *
    * @param {Object} AlbumInfo Information about the Artist
@@ -14,7 +12,6 @@ class Artist extends Utility {
     * @property {integer} id artist id
     * @property {string} name artist name
     */
-    super('Artist');
     this.id = id;
     this.name = name;
   }
@@ -41,11 +38,6 @@ const artistSongs = songs.filter(x => x.artistId == artistId)
 const artistAlbums = albums.filter(x => x.artistId == artistId)
 
 
-/**
- * @description This is populating the artist view whith the choosen artist name
- */
-document.querySelector('.artistName').innerHTML = choosenArtist.name;
-
 /** @function
  * @name renderingAlbum
  * @returns void
@@ -53,10 +45,15 @@ document.querySelector('.artistName').innerHTML = choosenArtist.name;
  */
 
 $(document).ready(function() {
+
+  /**
+   * @description This is populating the artist view whith the choosen artist name
+   */
+  document.querySelector('.artistName').innerHTML = choosenArtist.name;
+  
  document.querySelector('.tracklist').innerHTML = artistSongs.map((song, index) =>
    `<li class='tracklistRow'>
          <div class='trackCount'>
-           <img class='play' src='assets/images/icons/play-white.png' onclick='setTrack(\"" . $albumSong->getId() . "\", tempPlaylist, true)'>
            <span class='trackNumber'>${index + 1}</span>
          </div>
 

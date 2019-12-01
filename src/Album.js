@@ -1,11 +1,8 @@
-
-import Utility from './Utility.js';
-
 /**
  * Class to create a Artist object
   * @class
  */
-class Album extends Utility {
+class Album{
   /**
    *
    * @param {Object} AlbumInfo Information about the Album
@@ -18,7 +15,6 @@ class Album extends Utility {
     * @property {integer} genreId album genreId
     * @property {string} pathToPicture album pathToPicture
     */
-    super('Album');
     this.id = id;
     this.title = title;
     this.artistId = artistId;
@@ -27,20 +23,6 @@ class Album extends Utility {
   }
 
 }
-
-/**
- * object containing an array of alubums
-* @typedef {Object} Album
- */
-let albums = JSON.parse(localStorage.albums);
-/**
- * See {@link Artist}
- */
-let artist = JSON.parse(localStorage.artist);
-/**
- * See {@link Song}
- */
-let songs = JSON.parse(localStorage.songs);
 
 /** @function
  * @name renderingAlbum
@@ -63,7 +45,6 @@ $(document).ready(function() {
   document.querySelector('.tracklist').innerHTML = songProperty.map((song, index) =>
     `            <li class='tracklistRow'>
                         <div class='trackCount'>
-                          <img class='play' src='assets/images/icons/play-white.png' onclick=''>
                           <span class='trackNumber'>${index + 1}</span>
                         </div>
 

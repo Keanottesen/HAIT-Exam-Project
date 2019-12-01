@@ -4,7 +4,7 @@ import Utility from './Utility.js';
  * Class to create a Song object
   * @class
  */
-class Song extends Utility {
+class Song {
   /**
    *
    * @param {Object} SongInfo Information about the Song
@@ -19,7 +19,6 @@ class Song extends Utility {
     * @property {string} duration song duration
     * @property {integer} plays song plays
     */
-    super('Song');
     this.id = id;
     this.title = title;
     this.artistId = artistId;
@@ -35,5 +34,3 @@ class Song extends Utility {
    */
 
 }
-
-const o = new Song();
