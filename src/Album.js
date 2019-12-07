@@ -7,18 +7,16 @@ class Album{
    *
    * @param {Object} AlbumInfo Information about the Album
    */
-  constructor(id, title, artistId, genreId, pathToPicture) {
+  constructor(id, title, artistId, pathToPicture) {
     /**
     * @property {integer} id album id
     * @property {string} title album title
     * @property {integer} artistId album artistId
-    * @property {integer} genreId album genreId
     * @property {string} pathToPicture album pathToPicture
     */
     this.id = id;
     this.title = title;
     this.artistId = artistId;
-    this.genreId = genreId;
     this.pathToPicture = pathToPicture;
   }
 

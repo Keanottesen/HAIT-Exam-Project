@@ -4,12 +4,16 @@
   "description": "",
   "main": "script.js",
   "scripts": {
-    "doc": "jsdoc -c jsdoc.json",
+    "doc": "jsdoc -c jsdoc.json"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "jsdoc": "^3.6.3"
+  },
+  "dependencies": {
+    "expect-puppeteer": "^4.3.0",
+    "puppeteer": "^2.0.0"
   }
 }
