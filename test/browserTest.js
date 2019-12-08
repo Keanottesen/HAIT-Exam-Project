@@ -8,15 +8,7 @@ const puppeteer = require('puppeteer');
 
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
-
-
-
-
-
     await page.goto('http://localhost:5000/')
-
-
-
     await expect(page).toFillForm('form[name="loginForm"]', {
     loginEmail: 'kean_ottesen@hotmail.com',
     loginPassword: '123456789',

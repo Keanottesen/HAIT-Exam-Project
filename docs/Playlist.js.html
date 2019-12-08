@@ -26,13 +26,11 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import Utility from './Utility.js';
-
-/**
+            <pre class="prettyprint source linenums"><code>/**
  * Class to create a Playlist object
   * @class
  */
-class Playlist extends Utility {
+class Playlist {
   /**
    *
    * @param {Object} PlaylistInfo Information about the Playlist
@@ -44,13 +42,88 @@ class Playlist extends Utility {
     * @property {integer} ownerUserId playlist ownerUserId
     * @property {DateTime} dateCreated playlist dateCreated
     */
-    super('Playlist');
     this.id = id;
     this.name = name;
     this.ownerUserId = ownerUserId;
     this.dateCreated = dateCreated;
   }
 
+}
+
+
+/**
+ * @async
+ * @function
+ * @name createPlaylist
+ * @returns {void}
+ * @description this function is handling the logic when a user wants to create a playlist
+ */
+function createPlaylist() {
+  (async () => {
+    var {value: newPlaylist} = await Swal.fire({
+    title: 'Hvad skal din playlist hedde?',
+    input: 'text',
+    inputPlaceholder: 'Min playliste',
+    background: '#181818',
+    icon: 'question',
+    confirmButtonText: 'Skab din playliste',
+    confirmButtonColor: '#2FBD5A',
+    inputAttributes: {
+    maxlength: 15,
+    autocapitalize: 'on',
+    autocorrect: 'off'
+  }
+  })
+
+  	let userLoggedIn = users.find(x => x.active === true);
+    if (newPlaylist != null) {
+
+      const newPlaylistObject = new Playlist(
+  			    JSON.parse(localStorage.playlists).length,
+  			    newPlaylist,
+  			    userLoggedIn.id,
+  			    new Date()
+  			  )
+
+  		playlists.push(newPlaylistObject)
+  				this.pushToLocalStorage(playlists, 'playlists');
+          location.reload();
+        };
+})()
+  }
+
+  /**
+   * @async
+   * @function
+   * @name deletePlaylist
+   * @returns {void}
+   * @description this function is handling the logic when a user wants to delete a playlist
+   */
+function deletePlaylist() {
+
+    (async () => {
+
+      var deletedPlaylist = await Swal.fire({
+      title: 'Er du sikker?',
+      background: '#181818',
+      icon: 'info',
+      confirmButtonText: 'Slet min playliste',
+      confirmButtonColor: '#2FBD5A',
+    }).then(() => {
+
+      const deletedPlaylistId = JSON.parse(localStorage.getItem("state")).playlist_id
+      for (var i = 0; i &lt; playlists.length; i++) {
+
+        if (playlists[i].id == deletedPlaylistId) {
+          console.log(playlists[i]);
+            playlists.splice(i, 1);
+        }
+      }
+      const storageObject = JSON.stringify(playlists);
+      localStorage.setItem('playlists', storageObject);
+      window.location = 'yourMusic.html';
+    })
+  })()
 }
 
 /**
@@ -80,35 +153,37 @@ const songsInPlaylist = songs.filter(x => songIds.includes(x.id))
  * @description This function is populating the view with all song in the playlist
  */
 $(document).ready(function() {
-document.getElementById('playlistName').innerHTML = playlistProperty.name;
-document.getElementById('playlistOwner').innerHTML = playlistProperty.owner;
-document.getElementById('playlistSongs').innerHTML = songIds.length + ' songs';
+if (window.location.pathname == '/playlist') {
+  document.getElementById('playlistName').innerHTML = playlistProperty.name;
+  document.getElementById('playlistOwner').innerHTML = playlistProperty.owner;
+  document.getElementById('playlistSongs').innerHTML = songIds.length + ' songs';
 
-document.querySelector('.tracklist').innerHTML = songsInPlaylist.map((song, index) =>
-  `            &lt;li class='tracklistRow'>
-                    &lt;div class='trackCount'>
-                      &lt;img class='play' src='assets/images/icons/play-white.png' onclick=''>
-                      &lt;span class='trackNumber'>${index + 1}&lt;/span>
-                    &lt;/div>
-
-
-                    &lt;div class='trackInfo'>
-                      &lt;span class='trackName'>${song.title}&lt;/span>
-                      &lt;span class='artistName'>${artist.find(x => x.id == song.artistId).name}&lt;/span>
-                    &lt;/div>
-
-                    &lt;div class='trackOptions'>
-                      &lt;input type='hidden' class='songId' value='" . $playlistSong->getId() . "'>
-                      &lt;img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this, ${song.id})'>
-                    &lt;/div>
-
-                    &lt;div class='trackDuration'>
-                      &lt;span class='duration'>${song.duration}&lt;/span>
-                    &lt;/div>
+  document.querySelector('.tracklist').innerHTML = songsInPlaylist.map((song, index) =>
+    `            &lt;li class='tracklistRow'>
+                      &lt;div class='trackCount'>
+                        &lt;span class='trackNumber'>${index + 1}&lt;/span>
+                      &lt;/div>
 
 
-                  &lt;/li>`
-).join('')
+                      &lt;div class='trackInfo'>
+                        &lt;span class='trackName'>${song.title}&lt;/span>
+                        &lt;span class='artistName'>${artist.find(x => x.id == song.artistId).name}&lt;/span>
+                      &lt;/div>
+
+                      &lt;div class='trackOptions'>
+                        &lt;input type='hidden' class='songId' value='" . $playlistSong->getId() . "'>
+                        &lt;img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this, ${song.id})'>
+                      &lt;/div>
+
+                      &lt;div class='trackDuration'>
+                        &lt;span class='duration'>${song.duration}&lt;/span>
+                      &lt;/div>
+
+
+                    &lt;/li>`
+  ).join('')
+
+}
 })
 </code></pre>
         </article>
@@ -120,13 +195,13 @@ document.querySelector('.tracklist').innerHTML = songsInPlaylist.map((song, inde
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Utility.html">Utility</a></li></ul><h3>Classes</h3><ul><li><a href="global.html#Album">Album</a></li><li><a href="global.html#Artist">Artist</a></li><li><a href="global.html#Playlist">Playlist</a></li><li><a href="Song.html">Song</a></li><li><a href="User.html">User</a></li><li><a href="Utility.html">Utility</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addToPlaylist">addToPlaylist</a></li><li><a href="global.html#artist">artist</a></li><li><a href="global.html#artistAlbums">artistAlbums</a></li><li><a href="global.html#artistId">artistId</a></li><li><a href="global.html#artistSongs">artistSongs</a></li><li><a href="global.html#createPlaylist">createPlaylist</a></li><li><a href="global.html#deletePlaylist">deletePlaylist</a></li><li><a href="global.html#genericRendering">genericRendering</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#onAlbumClickHandler">onAlbumClickHandler</a></li><li><a href="global.html#onArtistClickHandler">onArtistClickHandler</a></li><li><a href="global.html#playlistId">playlistId</a></li><li><a href="global.html#playlistOnclickHandler">playlistOnclickHandler</a></li><li><a href="global.html#playlistRendering">playlistRendering</a></li><li><a href="global.html#playlists">playlists</a></li><li><a href="global.html#pushToLocalStorage">pushToLocalStorage</a></li><li><a href="global.html#removeFromPlaylist">removeFromPlaylist</a></li><li><a href="global.html#renderingAlbum">renderingAlbum</a></li><li><a href="global.html#setState">setState</a></li><li><a href="global.html#showOptionsMenu">showOptionsMenu</a></li><li><a href="global.html#songIds">songIds</a></li><li><a href="global.html#songOnclickHandler">songOnclickHandler</a></li><li><a href="global.html#songs">songs</a></li><li><a href="global.html#songsInPlaylist">songsInPlaylist</a></li><li><a href="global.html#state">state</a></li><li><a href="global.html#toObject">toObject</a></li><li><a href="global.html#updateEmail">updateEmail</a></li><li><a href="global.html#updatePassword">updatePassword</a></li><li><a href="global.html#.innerHTML">.innerHTML</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Album.html">Album</a></li><li><a href="global.html#Artist">Artist</a></li><li><a href="global.html#Playlist">Playlist</a></li><li><a href="Song.html">Song</a></li><li><a href="User.html">User</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addToPlaylist">addToPlaylist</a></li><li><a href="global.html#artistAlbums">artistAlbums</a></li><li><a href="global.html#artistId">artistId</a></li><li><a href="global.html#artistSongs">artistSongs</a></li><li><a href="global.html#createPlaylist">createPlaylist</a></li><li><a href="global.html#deletePlaylist">deletePlaylist</a></li><li><a href="global.html#genericRendering">genericRendering</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#onAlbumClickHandler">onAlbumClickHandler</a></li><li><a href="global.html#onArtistClickHandler">onArtistClickHandler</a></li><li><a href="global.html#playlistId">playlistId</a></li><li><a href="global.html#playlistOnclickHandler">playlistOnclickHandler</a></li><li><a href="global.html#playlistRendering">playlistRendering</a></li><li><a href="global.html#playlists">playlists</a></li><li><a href="global.html#pushToLocalStorage">pushToLocalStorage</a></li><li><a href="global.html#removeFromPlaylist">removeFromPlaylist</a></li><li><a href="global.html#renderingAlbum">renderingAlbum</a></li><li><a href="global.html#renderingloginOrRegister">renderingloginOrRegister</a></li><li><a href="global.html#setState">setState</a></li><li><a href="global.html#showOptionsMenu">showOptionsMenu</a></li><li><a href="global.html#songIds">songIds</a></li><li><a href="global.html#songOnclickHandler">songOnclickHandler</a></li><li><a href="global.html#songsInPlaylist">songsInPlaylist</a></li><li><a href="global.html#state">state</a></li><li><a href="global.html#toObject">toObject</a></li><li><a href="global.html#updateEmail">updateEmail</a></li><li><a href="global.html#updatePassword">updatePassword</a></li><li><a href="global.html#validateLogin">validateLogin</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Thu Nov 28 2019 18:38:50 GMT+0100 (Central European Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Dec 08 2019 14:51:34 GMT+0100 (Central European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

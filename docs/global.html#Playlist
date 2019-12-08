@@ -142,7 +142,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Playlist.js.html">Playlist.js</a>, <a href="Playlist.js.html#line12">line 12</a>
+        <a href="Playlist.js.html">Playlist.js</a>, <a href="Playlist.js.html#line10">line 10</a>
     </li></ul></dd>
     
 
@@ -188,6 +188,189 @@
     
 
     
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="id"><span class="type-signature"></span>id<span class="type-signature"></span></h4>
+
+
+
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">integer</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>playlist id</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>playlist name</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ownerUserId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">integer</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>playlist ownerUserId</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dateCreated</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">DateTime</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>playlist dateCreated</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Playlist.js.html">Playlist.js</a>, <a href="Playlist.js.html#line17">line 17</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
 
     
 
@@ -204,13 +387,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Utility.html">Utility</a></li></ul><h3>Classes</h3><ul><li><a href="global.html#Album">Album</a></li><li><a href="global.html#Artist">Artist</a></li><li><a href="global.html#Playlist">Playlist</a></li><li><a href="Song.html">Song</a></li><li><a href="User.html">User</a></li><li><a href="Utility.html">Utility</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addToPlaylist">addToPlaylist</a></li><li><a href="global.html#artist">artist</a></li><li><a href="global.html#artistAlbums">artistAlbums</a></li><li><a href="global.html#artistId">artistId</a></li><li><a href="global.html#artistSongs">artistSongs</a></li><li><a href="global.html#createPlaylist">createPlaylist</a></li><li><a href="global.html#deletePlaylist">deletePlaylist</a></li><li><a href="global.html#genericRendering">genericRendering</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#onAlbumClickHandler">onAlbumClickHandler</a></li><li><a href="global.html#onArtistClickHandler">onArtistClickHandler</a></li><li><a href="global.html#playlistId">playlistId</a></li><li><a href="global.html#playlistOnclickHandler">playlistOnclickHandler</a></li><li><a href="global.html#playlistRendering">playlistRendering</a></li><li><a href="global.html#playlists">playlists</a></li><li><a href="global.html#pushToLocalStorage">pushToLocalStorage</a></li><li><a href="global.html#removeFromPlaylist">removeFromPlaylist</a></li><li><a href="global.html#renderingAlbum">renderingAlbum</a></li><li><a href="global.html#setState">setState</a></li><li><a href="global.html#showOptionsMenu">showOptionsMenu</a></li><li><a href="global.html#songIds">songIds</a></li><li><a href="global.html#songOnclickHandler">songOnclickHandler</a></li><li><a href="global.html#songs">songs</a></li><li><a href="global.html#songsInPlaylist">songsInPlaylist</a></li><li><a href="global.html#state">state</a></li><li><a href="global.html#toObject">toObject</a></li><li><a href="global.html#updateEmail">updateEmail</a></li><li><a href="global.html#updatePassword">updatePassword</a></li><li><a href="global.html#.innerHTML">.innerHTML</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Album.html">Album</a></li><li><a href="global.html#Artist">Artist</a></li><li><a href="global.html#Playlist">Playlist</a></li><li><a href="Song.html">Song</a></li><li><a href="User.html">User</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addToPlaylist">addToPlaylist</a></li><li><a href="global.html#artistAlbums">artistAlbums</a></li><li><a href="global.html#artistId">artistId</a></li><li><a href="global.html#artistSongs">artistSongs</a></li><li><a href="global.html#createPlaylist">createPlaylist</a></li><li><a href="global.html#deletePlaylist">deletePlaylist</a></li><li><a href="global.html#genericRendering">genericRendering</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#onAlbumClickHandler">onAlbumClickHandler</a></li><li><a href="global.html#onArtistClickHandler">onArtistClickHandler</a></li><li><a href="global.html#playlistId">playlistId</a></li><li><a href="global.html#playlistOnclickHandler">playlistOnclickHandler</a></li><li><a href="global.html#playlistRendering">playlistRendering</a></li><li><a href="global.html#playlists">playlists</a></li><li><a href="global.html#pushToLocalStorage">pushToLocalStorage</a></li><li><a href="global.html#removeFromPlaylist">removeFromPlaylist</a></li><li><a href="global.html#renderingAlbum">renderingAlbum</a></li><li><a href="global.html#renderingloginOrRegister">renderingloginOrRegister</a></li><li><a href="global.html#setState">setState</a></li><li><a href="global.html#showOptionsMenu">showOptionsMenu</a></li><li><a href="global.html#songIds">songIds</a></li><li><a href="global.html#songOnclickHandler">songOnclickHandler</a></li><li><a href="global.html#songsInPlaylist">songsInPlaylist</a></li><li><a href="global.html#state">state</a></li><li><a href="global.html#toObject">toObject</a></li><li><a href="global.html#updateEmail">updateEmail</a></li><li><a href="global.html#updatePassword">updatePassword</a></li><li><a href="global.html#validateLogin">validateLogin</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Thu Nov 28 2019 18:38:50 GMT+0100 (Central European Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Dec 08 2019 14:51:34 GMT+0100 (Central European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

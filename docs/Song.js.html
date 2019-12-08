@@ -26,45 +26,33 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import Utility from './Utility.js';
-
-/**
+            <pre class="prettyprint source linenums"><code>/**
  * Class to create a Song object
   * @class
  */
-class Song extends Utility {
+class Song {
   /**
    *
    * @param {Object} SongInfo Information about the Song
    */
-  constructor(id, name, artistId, albumId, genreId, duration, plays) {
+  constructor(id, name, artistId, albumId, duration, plays) {
     /**
     * @property {integer} id song id
     * @property {string} title song title
     * @property {integer} artistId song artistId
     * @property {integer} albumId song albumId
-    * @property {integer} genreId song genreId
     * @property {string} duration song duration
     * @property {integer} plays song plays
     */
-    super('Song');
     this.id = id;
     this.title = title;
     this.artistId = artistId;
     this.albumId = albumId;
-    this.genreId = genreId;
     this.duration = duration;
     this.plays = plays;
   }
 
-  /**
-   * @property {Function} greet A greeting with the name and age
-   * @returns void
-   */
-
 }
-
-const o = new Song();
 </code></pre>
         </article>
     </section>
@@ -75,13 +63,13 @@ const o = new Song();
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Utility.html">Utility</a></li></ul><h3>Classes</h3><ul><li><a href="global.html#Album">Album</a></li><li><a href="global.html#Artist">Artist</a></li><li><a href="global.html#Playlist">Playlist</a></li><li><a href="Song.html">Song</a></li><li><a href="User.html">User</a></li><li><a href="Utility.html">Utility</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addToPlaylist">addToPlaylist</a></li><li><a href="global.html#artist">artist</a></li><li><a href="global.html#artistAlbums">artistAlbums</a></li><li><a href="global.html#artistId">artistId</a></li><li><a href="global.html#artistSongs">artistSongs</a></li><li><a href="global.html#createPlaylist">createPlaylist</a></li><li><a href="global.html#deletePlaylist">deletePlaylist</a></li><li><a href="global.html#genericRendering">genericRendering</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#onAlbumClickHandler">onAlbumClickHandler</a></li><li><a href="global.html#onArtistClickHandler">onArtistClickHandler</a></li><li><a href="global.html#playlistId">playlistId</a></li><li><a href="global.html#playlistOnclickHandler">playlistOnclickHandler</a></li><li><a href="global.html#playlistRendering">playlistRendering</a></li><li><a href="global.html#playlists">playlists</a></li><li><a href="global.html#pushToLocalStorage">pushToLocalStorage</a></li><li><a href="global.html#removeFromPlaylist">removeFromPlaylist</a></li><li><a href="global.html#renderingAlbum">renderingAlbum</a></li><li><a href="global.html#setState">setState</a></li><li><a href="global.html#showOptionsMenu">showOptionsMenu</a></li><li><a href="global.html#songIds">songIds</a></li><li><a href="global.html#songOnclickHandler">songOnclickHandler</a></li><li><a href="global.html#songs">songs</a></li><li><a href="global.html#songsInPlaylist">songsInPlaylist</a></li><li><a href="global.html#state">state</a></li><li><a href="global.html#toObject">toObject</a></li><li><a href="global.html#updateEmail">updateEmail</a></li><li><a href="global.html#updatePassword">updatePassword</a></li><li><a href="global.html#.innerHTML">.innerHTML</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Album.html">Album</a></li><li><a href="global.html#Artist">Artist</a></li><li><a href="global.html#Playlist">Playlist</a></li><li><a href="Song.html">Song</a></li><li><a href="User.html">User</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addToPlaylist">addToPlaylist</a></li><li><a href="global.html#artistAlbums">artistAlbums</a></li><li><a href="global.html#artistId">artistId</a></li><li><a href="global.html#artistSongs">artistSongs</a></li><li><a href="global.html#createPlaylist">createPlaylist</a></li><li><a href="global.html#deletePlaylist">deletePlaylist</a></li><li><a href="global.html#genericRendering">genericRendering</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#onAlbumClickHandler">onAlbumClickHandler</a></li><li><a href="global.html#onArtistClickHandler">onArtistClickHandler</a></li><li><a href="global.html#playlistId">playlistId</a></li><li><a href="global.html#playlistOnclickHandler">playlistOnclickHandler</a></li><li><a href="global.html#playlistRendering">playlistRendering</a></li><li><a href="global.html#playlists">playlists</a></li><li><a href="global.html#pushToLocalStorage">pushToLocalStorage</a></li><li><a href="global.html#removeFromPlaylist">removeFromPlaylist</a></li><li><a href="global.html#renderingAlbum">renderingAlbum</a></li><li><a href="global.html#renderingloginOrRegister">renderingloginOrRegister</a></li><li><a href="global.html#setState">setState</a></li><li><a href="global.html#showOptionsMenu">showOptionsMenu</a></li><li><a href="global.html#songIds">songIds</a></li><li><a href="global.html#songOnclickHandler">songOnclickHandler</a></li><li><a href="global.html#songsInPlaylist">songsInPlaylist</a></li><li><a href="global.html#state">state</a></li><li><a href="global.html#toObject">toObject</a></li><li><a href="global.html#updateEmail">updateEmail</a></li><li><a href="global.html#updatePassword">updatePassword</a></li><li><a href="global.html#validateLogin">validateLogin</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Thu Nov 28 2019 18:38:50 GMT+0100 (Central European Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Dec 08 2019 14:51:34 GMT+0100 (Central European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
