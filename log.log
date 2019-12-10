@@ -1,0 +1,21 @@
+* eef5659 : changes in documentaion
+* 7805b38 : ignored node modules
+* 26f65ff : test completed
+* baaecc5 : final commit
+* 36155f3 : more documentation
+* 71c7979 : refactoring
+* 0fa64e1 : js doc init
+* 7799240 : js doc for documentation
+* c5dc69c : playlist datastructure redesigned
+* 20e3a8e : small changes
+* 20f042f : artist and search
+* f54a7dd : remove from playlist
+* b2cae52 : add songs to playlists
+* 90d19f5 : small changes
+* 190120c : different functionality
+* af2f971 : beautify
+* 6d9b09e : layout
+* f820b1d : album page
+* 5151e4f : browse and login
+* e698530 : init
+* ef0d076 : Initial commit
