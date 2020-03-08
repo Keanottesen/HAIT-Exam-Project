@@ -1,4 +1,4 @@
-
+import axios from 'axios';
 /**
  * Class to create a User object
   * @class
@@ -74,19 +74,38 @@ function validateLogin(){
 }
 
 
-function createUser(){
-  let newUser = new User(
-    users.length + 1,
-    document.forms['registerForm']['firstName'].value,
-    document.forms['registerForm']['username'].value,
-    document.forms['registerForm']['lastName'].value,
-    document.forms['registerForm']['email'].value,
-    document.forms['registerForm']['password'].value,
-    true);
 
-     users.push(newUser);
-     const storgaeUsers = JSON.stringify(users);
-     localStorage.setItem('users', storgaeUsers);
+
+function createUser(){
+
+
+  axios.post('http://localhost:8000/api/createUser', {
+    first_name: document.forms['registerForm']['firstName'].value,
+    last_name: document.forms['registerForm']['username'].value,
+    username: document.forms['registerForm']['lastName'].value,
+    email: document.forms['registerForm']['email'].value,
+    password: document.forms['registerForm']['password'].value
+  })
+  .then(response => {
+      console.log(response);
+  })
+  .catch(error => {
+    // TODO: Catch error
+    console.log(error);
+  })
+
+  // let newUser = new User(
+  //   users.length + 1,
+  //   document.forms['registerForm']['firstName'].value,
+  //   document.forms['registerForm']['username'].value,
+  //   document.forms['registerForm']['lastName'].value,
+  //   document.forms['registerForm']['email'].value,
+  //   document.forms['registerForm']['password'].value,
+  //   true);
+  //
+  //    users.push(newUser);
+  //    const storgaeUsers = JSON.stringify(users);
+  //    localStorage.setItem('users', storgaeUsers);
  }
 
 
