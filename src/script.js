@@ -16,26 +16,28 @@ let songs = JSON.parse(localStorage.songs);
 let users = JSON.parse(localStorage.users);
 let playlistSongs = JSON.parse(localStorage.playlistSongs);
 
+//
+// if (users.find(x => x.active === true) === undefined) {
+//   window.location = 'index.html';
+// }
+//
+//
+   console.log(localStorage.getItem("state"));
 
-if (users.find(x => x.active === true) === undefined) {
-  window.location = 'index.html';
-}
-
-
-if (localStorage.getItem("state") === null) {
-  state = {
-    album_id: null,
-    artist_id: null,
-    playlist_id: null,
-    song_id: null
-  }
-  const storageState = JSON.stringify(state);
-  localStorage.setItem('state', storageState);
-} else {
-  var retrievedObject = localStorage.getItem('state');
-
-  state = JSON.parse(retrievedObject);
-}
+   if (localStorage.getItem("state") === null) {
+     state = {
+       album_id: null,
+       artist_id: null,
+       playlist_id: null,
+       song_id: null,
+       activeUser: null
+     }
+     const storageState = JSON.stringify(state);
+     localStorage.setItem('state', storageState);
+   } else {
+     var retrievedObject = localStorage.getItem('state');
+     state = JSON.parse(retrievedObject);
+   }
 
 $(function(){
   $("#nav-placeholder").load("navBarContainer.html");
@@ -236,8 +238,11 @@ function showOptionsMenu(button, songId) {
  * @description This function is populating the view the respective variable content that is on each path
  */
  $(document).ready(function() {
+
   let userLoggedIn = users.find(x => x.active === true);
   setTimeout(function(){document.getElementById('activeUserName').innerHTML = userLoggedIn.firstName + " " + userLoggedIn.lastName}, 50);
+
+
   switch (window.location.pathname) {
     case '/browse':
       //render data in html

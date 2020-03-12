@@ -1,4 +1,3 @@
-import axios from 'axios';
 /**
  * Class to create a User object
   * @class
@@ -29,6 +28,8 @@ class User{
 
 }
 
+let activeUser, user;
+
 /**
  * @function
  * @name validateLogin
@@ -37,48 +38,68 @@ class User{
  */
 function validateLogin(){
 
-  const allEmails = users.map(user => (user.email));
-  const allPasswords = users.map(user => (user.password));
+  axios.post('http://localhost:8000/api/validateUser', {
+    email: document.forms['loginForm']['loginEmail'].value,
+    password: document.forms['loginForm']['loginPassword'].value
+  })
+  .then(response => {
+    console.log(response);
+    user = response.data
+    activeUser = new User(
+      user.id,
+      user.first_name,
+      user.username,
+      user.last_name,
+      user.email,
+      user.password,
+      user.active
+    );
 
-  var email = document.forms['loginForm']['loginEmail'].value;
-  var password = document.forms['loginForm']['loginPassword'].value;
+    localStorage.setItem('state', JSON.stringify(activeUser));
 
-  if (!allEmails.includes(email) || !allPasswords.includes(password)) {
+      window.location = 'browse.html';
+  })
+  .catch(error => {
       alert('Dit email eller kodeord er forkert');
-      return false;
-  }
+  })
 
-  const userLoggedIn = users.find(x => x.email == email);
+  // const allEmails = users.map(user => (user.email));
+  // const allPasswords = users.map(user => (user.password));
+  //
+  // var email = document.forms['loginForm']['loginEmail'].value;
+  // var password = document.forms['loginForm']['loginPassword'].value;
+  //
+  // if (!allEmails.includes(email) || !allPasswords.includes(password)) {
+  //     alert('Dit email eller kodeord er forkert');
+  //     return false;
+  // }
+  //
+  // const userLoggedIn = users.find(x => x.email == email);
+  //
+  // for (var i = 0; i < users.length; i++) {
+  //   if (users[i].id == userLoggedIn.id) {
+  //       users.splice(i, 1);
+  //   }
+  // }
+  //
+  // let authUser = new User(
+  //   userLoggedIn.id,
+  //   userLoggedIn.firstName,
+  //   userLoggedIn.userName,
+  //   userLoggedIn.lastName,
+  //   userLoggedIn.email,
+  //   userLoggedIn.password,
+  //   true
+  // )
+  //
+  // users.push(authUser);
+  //
+  // const storageObject = JSON.stringify(users);
+  // localStorage.setItem('users', storageObject);
 
-  for (var i = 0; i < users.length; i++) {
-    if (users[i].id == userLoggedIn.id) {
-        users.splice(i, 1);
-    }
-  }
-
-  let authUser = new User(
-    userLoggedIn.id,
-    userLoggedIn.firstName,
-    userLoggedIn.userName,
-    userLoggedIn.lastName,
-    userLoggedIn.email,
-    userLoggedIn.password,
-    true
-  )
-
-  users.push(authUser);
-
-  const storageObject = JSON.stringify(users);
-  localStorage.setItem('users', storageObject);
-  window.location = 'browse.html';
 }
 
-
-
-
 function createUser(){
-
-
   axios.post('http://localhost:8000/api/createUser', {
     first_name: document.forms['registerForm']['firstName'].value,
     last_name: document.forms['registerForm']['username'].value,
@@ -87,7 +108,18 @@ function createUser(){
     password: document.forms['registerForm']['password'].value
   })
   .then(response => {
-      console.log(response);
+    user = response.data
+    activeUser = new User(
+      user.id,
+      user.first_name,
+      user.username,
+      user.last_name,
+      user.email,
+      user.password,
+      user.active
+    );
+    
+    setState('activeUser', activeUser)
   })
   .catch(error => {
     // TODO: Catch error
@@ -115,103 +147,126 @@ function createUser(){
   * @returns {void}
   * @description this function is handling the logic when a user wants to update his or her email
   */
- function updateEmail() {
-   const newEmail = document.querySelectorAll('.updatedEmail')[0].value;
+ function updateEmail(action) {
 
-   let userLoggedIn = users.find(x => x.active === true);
-   let usersArray = users
-
-   for (var i = 0; i < usersArray.length; i++) {
-     if (usersArray[i].id == userLoggedIn.id) {
-         usersArray.splice(i, 1);
-     }
+   let body = {}
+   switch (action) {
+     case 'email':
+      body = {email: document.querySelectorAll('.updatedEmail')[0].value}
+       break;
+     case 'password':
+      body = {password: document.querySelectorAll('.newPassword1')[0].value}
+       break;
+     case 'logout':
+      body = {active: 0}
+       break;
    }
 
-   let authUser = new User(
-     userLoggedIn.id,
-     userLoggedIn.firstName,
-     userLoggedIn.userName,
-     userLoggedIn.lastName,
-     newEmail,
-     userLoggedIn.password,
-     userLoggedIn.active
-   )
+   axios.put('http://localhost:8000/api/updateUser/' + user.id, body)
+   .then(response => {
+       console.log(response);
+   })
+   .catch(error => {
+     // TODO: Catch error
+     console.log(error);
+   })
 
-   usersArray.push(authUser)
-   const storgaeUsers = JSON.stringify(usersArray);
-   localStorage.setItem('users', storgaeUsers);
+   // const newEmail = document.querySelectorAll('.updatedEmail')[0].value;
+   //
+   // let userLoggedIn = users.find(x => x.active === true);
+   // let usersArray = users
+   //
+   // for (var i = 0; i < usersArray.length; i++) {
+   //   if (usersArray[i].id == userLoggedIn.id) {
+   //       usersArray.splice(i, 1);
+   //   }
+   // }
+   //
+   // let authUser = new User(
+   //   userLoggedIn.id,
+   //   userLoggedIn.firstName,
+   //   userLoggedIn.userName,
+   //   userLoggedIn.lastName,
+   //   newEmail,
+   //   userLoggedIn.password,
+   //   userLoggedIn.active
+   // )
+   //
+   // usersArray.push(authUser)
+   // const storgaeUsers = JSON.stringify(usersArray);
+   // localStorage.setItem('users', storgaeUsers);
  }
 
+ //
+ // /**
+ //  * @function
+ //  * @name updatePassword
+ //  * @returns {void}
+ //  * @description this function is handling the logic when a user wants to update his or her password
+ //  */
+ // function updatePassword() {
+ //   const oldPassword = document.querySelectorAll('.oldPassword')[0].value;
+ //   const new1Password = document.querySelectorAll('.newPassword1')[0].value;
+ //   const new2Password = document.querySelectorAll('.newPassword2')[0].value;
+ //   let userLoggedIn = users.find(x => x.active === true);
+ //
+ //   if (new1Password == new2Password) {
+ //     let usersArray = users
+ //
+ //     for (var i = 0; i < usersArray.length; i++) {
+ //       if (usersArray[i].id == userLoggedIn.id) {
+ //           usersArray.splice(i, 1);
+ //       }
+ //     }
+ //     let authUser = new User(
+ //       userLoggedIn.id,
+ //       userLoggedIn.firstName,
+ //       userLoggedIn.userName,
+ //       userLoggedIn.lastName,
+ //       userLoggedIn.email,
+ //       new1Password,
+ //       userLoggedIn.active
+ //     )
+ //
+ //     usersArray.push(authUser)
+ //     const storgaeUsers = JSON.stringify(usersArray);
+ //     localStorage.setItem('users', storgaeUsers);
+ //   } else {
+ //     alert('Kodeord matcher ikke')
+ //   }
+ // }
 
- /**
-  * @function
-  * @name updatePassword
-  * @returns {void}
-  * @description this function is handling the logic when a user wants to update his or her password
-  */
- function updatePassword() {
-   const oldPassword = document.querySelectorAll('.oldPassword')[0].value;
-   const new1Password = document.querySelectorAll('.newPassword1')[0].value;
-   const new2Password = document.querySelectorAll('.newPassword2')[0].value;
-   let userLoggedIn = users.find(x => x.active === true);
-
-   if (new1Password == new2Password) {
-     let usersArray = users
-
-     for (var i = 0; i < usersArray.length; i++) {
-       if (usersArray[i].id == userLoggedIn.id) {
-           usersArray.splice(i, 1);
-       }
-     }
-     let authUser = new User(
-       userLoggedIn.id,
-       userLoggedIn.firstName,
-       userLoggedIn.userName,
-       userLoggedIn.lastName,
-       userLoggedIn.email,
-       new1Password,
-       userLoggedIn.active
-     )
-
-     usersArray.push(authUser)
-     const storgaeUsers = JSON.stringify(usersArray);
-     localStorage.setItem('users', storgaeUsers);
-   } else {
-     alert('Kodeord matcher ikke')
-   }
- }
-
-
- /**
-  * @function
-  * @name logout
-  * @returns {void}
-  * @description this function is handling the logic when a user wants to logout
-  */
- function logout() {
-   let userLoggedIn = users.find(x => x.active === true);
-   for (var i = 0; i < users.length; i++) {
-     if (users[i].id == userLoggedIn.id) {
-         users.splice(i, 1);
-     }
-   }
-
-   let authUser = new User(
-     userLoggedIn.id,
-     userLoggedIn.firstName,
-     userLoggedIn.userName,
-     userLoggedIn.lastName,
-     userLoggedIn.email,
-     userLoggedIn.password,
-     false
-   )
-
-   users.push(authUser);
-
-   const storgaeUsers = JSON.stringify(users);
-   localStorage.setItem('users', storgaeUsers);
-   window.location = 'index.html';
- }
+ //
+ // /**
+ //  * @function
+ //  * @name logout
+ //  * @returns {void}
+ //  * @description this function is handling the logic when a user wants to logout
+ //  */
+ // function logout() {
+ //   let userLoggedIn = users.find(x => x.active === true);
+ //   for (var i = 0; i < users.length; i++) {
+ //     if (users[i].id == userLoggedIn.id) {
+ //         users.splice(i, 1);
+ //     }
+ //   }
+ //
+ //   let authUser = new User(
+ //     userLoggedIn.id,
+ //     userLoggedIn.firstName,
+ //     userLoggedIn.userName,
+ //     userLoggedIn.lastName,
+ //     userLoggedIn.email,
+ //     userLoggedIn.password,
+ //     false
+ //   )
+ //
+ //   users.push(authUser);
+ //
+ //   const storgaeUsers = JSON.stringify(users);
+ //   localStorage.setItem('users', storgaeUsers);
+ //   window.location = 'index.html';
+ // }
 
  /** @function
   * @name renderingloginOrRegister
