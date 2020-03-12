@@ -4,40 +4,44 @@
  */
 let state = null;
 
-/**
- * Array of objects
- * @type {Array<objects>}
- * @description global variables
- */
-let playlists = JSON.parse(localStorage.playlists);
-let albums = JSON.parse(localStorage.albums);
-let artist = JSON.parse(localStorage.artist);
-let songs = JSON.parse(localStorage.songs);
-let users = JSON.parse(localStorage.users);
-let playlistSongs = JSON.parse(localStorage.playlistSongs);
+// /**
+//  * Array of objects
+//  * @type {Array<objects>}
+//  * @description global variables
+//  */
+let userLoggedIn = JSON.parse(localStorage.getItem('activeUser'))
+// let playlists = JSON.parse(localStorage.playlists);
+let albums = JSON.parse(localStorage.getItem('albums'))
+// let artist = JSON.parse(localStorage.artist);
+// let songs = JSON.parse(localStorage.songs);
+// let users = JSON.parse(localStorage.users);
+// let playlistSongs = JSON.parse(localStorage.playlistSongs);
 
 //
 // if (users.find(x => x.active === true) === undefined) {
 //   window.location = 'index.html';
 // }
-//
-//
-   console.log(localStorage.getItem("state"));
 
-   if (localStorage.getItem("state") === null) {
-     state = {
-       album_id: null,
-       artist_id: null,
-       playlist_id: null,
-       song_id: null,
-       activeUser: null
-     }
-     const storageState = JSON.stringify(state);
-     localStorage.setItem('state', storageState);
-   } else {
-     var retrievedObject = localStorage.getItem('state');
-     state = JSON.parse(retrievedObject);
-   }
+
+function pushToLocalStorage(object, name) {
+  let storageObject = JSON.stringify(object);
+  localStorage.setItem(name, storageObject);
+}
+
+if (localStorage.getItem("state") === null) {
+  state = {
+    album_id: null,
+    artist_id: null,
+    playlist_id: null,
+    song_id: null,
+    activeUser: {}
+  }
+  const storageState = JSON.stringify(state);
+  localStorage.setItem('state', storageState);
+} else {
+  var retrievedObject = localStorage.getItem('state');
+  state = JSON.parse(retrievedObject);
+}
 
 $(function(){
   $("#nav-placeholder").load("navBarContainer.html");
@@ -51,6 +55,7 @@ $(function(){
  * @description this function is emulating the setState function of react
  */
 function setState(key, value) {
+
   state[key] = value;
 
   const storageState = JSON.stringify(state);
@@ -239,18 +244,17 @@ function showOptionsMenu(button, songId) {
  */
  $(document).ready(function() {
 
-  let userLoggedIn = users.find(x => x.active === true);
   setTimeout(function(){document.getElementById('activeUserName').innerHTML = userLoggedIn.firstName + " " + userLoggedIn.lastName}, 50);
-
 
   switch (window.location.pathname) {
     case '/browse':
       //render data in html
-      console.log(albums);
-      document.querySelector('.gridViewContainer').innerHTML = albums.map(album =>
+      const browseAlbums = albums.slice(0, 28)
+      console.log(browseAlbums[0]);
+      document.querySelector('.gridViewContainer').innerHTML = browseAlbums.map(album =>
         `<div class='gridViewItem'>
 			 <span id=${album.id} role='link' tabindex='0' onclick='onAlbumClickHandler(this)'>
-					 <img src='${album.pathToPicture}'>
+					 <img src='${album.cover}'>
 					 <div class='gridViewInfo '>
 							 ${album.title}
 					 </div>
@@ -259,8 +263,6 @@ function showOptionsMenu(button, songId) {
       ).join('')
       break;
     case '/yourMusic':
-
-    let userLoggedIn = users.find(x => x.active === true);
 
     let userPlaylists = playlists.filter(x => x.ownerUserId == userLoggedIn.id);
 
@@ -278,9 +280,7 @@ function showOptionsMenu(button, songId) {
 
 		case '/settings':
 
-		let userLoggedIn2 = users.find(x => x.active === true);
-
-		document.getElementById('activeUserName').innerHTML = userLoggedIn2.firstName + ' ' + userLoggedIn2.lastName;
+		document.getElementById('activeUserName').innerHTML = userLoggedIn.firstName + ' ' + userLoggedIn.lastName;
 			break;
     case '/search':
     const typeHandler = function(e) {

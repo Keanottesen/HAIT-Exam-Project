@@ -43,8 +43,9 @@ function validateLogin(){
     password: document.forms['loginForm']['loginPassword'].value
   })
   .then(response => {
-    console.log(response);
+
     user = response.data
+
     activeUser = new User(
       user.id,
       user.first_name,
@@ -54,12 +55,12 @@ function validateLogin(){
       user.password,
       user.active
     );
-
-    localStorage.setItem('state', JSON.stringify(activeUser));
-
+    //eventuelt ændre til state
+    pushToLocalStorage(activeUser, 'activeUser')
       window.location = 'browse.html';
   })
   .catch(error => {
+    console.log(error);
       alert('Dit email eller kodeord er forkert');
   })
 
@@ -118,8 +119,9 @@ function createUser(){
       user.password,
       user.active
     );
-    
-    setState('activeUser', activeUser)
+
+    pushToLocalStorage(activeUser, 'activeUser')
+      window.location = 'browse.html';
   })
   .catch(error => {
     // TODO: Catch error
@@ -147,7 +149,7 @@ function createUser(){
   * @returns {void}
   * @description this function is handling the logic when a user wants to update his or her email
   */
- function updateEmail(action) {
+ function update(action) {
 
    let body = {}
    switch (action) {
@@ -162,9 +164,11 @@ function createUser(){
        break;
    }
 
-   axios.put('http://localhost:8000/api/updateUser/' + user.id, body)
+   axios.put('http://localhost:8000/api/updateUser/' + userLoggedIn.id, body)
    .then(response => {
-       console.log(response);
+     console.log(response);
+       localStorage.clear()
+       window.location = 'index.html';
    })
    .catch(error => {
      // TODO: Catch error

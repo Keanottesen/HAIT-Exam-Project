@@ -28,7 +28,21 @@ class Album{
  * @description This function is populating the view with all the album specefic information
  */
 
+let data;
+
 $(document).ready(function() {
+
+  axios.get('http://localhost:8000/api/queryAlbum/?q=%')
+  .then(response => {
+    data = response.data
+    pushToLocalStorage(data, 'albums')
+  })
+  .catch(error => {
+    // TODO: Catch error
+    console.log(error);
+  })
+
+
   const albumId = JSON.parse(localStorage.getItem("state")).album_id
   const albumProperty = albums.find(x => x.id == albumId)
   const artistProperty = artist.find(x => x.id == albumProperty.artistId)
