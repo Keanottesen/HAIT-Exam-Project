@@ -28,31 +28,46 @@ class Album{
  * @description This function is populating the view with all the album specefic information
  */
 
-let data;
-
-$(document).ready(function() {
-
+function getAlbums() {
   axios.get('http://localhost:8000/api/queryAlbum/?q=%')
   .then(response => {
-    data = response.data
+    const data = response.data
     pushToLocalStorage(data, 'albums')
   })
   .catch(error => {
     // TODO: Catch error
     console.log(error);
   })
+}
+
+function getAlbumById(id){
+
+  axios.get('http://localhost:8000/api/album/?album_id=' + id)
+  .then(response => {
+    const data = response.data
+
+    pushToLocalStorage(data, 'choosenAlbum')
+  })
+  .catch(error => {
+    // TODO: Catch error
+    console.log(error);
+  })
+
+}
 
 
-  const albumId = JSON.parse(localStorage.getItem("state")).album_id
-  const albumProperty = albums.find(x => x.id == albumId)
-  const artistProperty = artist.find(x => x.id == albumProperty.artistId)
-  const songProperty = songs.filter(x => x.albumId == albumId)
+$(document).ready(function() {
+
+  const albumProperty = JSON.parse(localStorage.getItem('choosenAlbum'))
+  getAlbumSong(albumProperty.api_id)
+  const artistProperty = albumProperty.contributors[0]
+  const songProperty = JSON.parse(localStorage.getItem('choosenAlbumSongs'))
 
   //setting values in album.html
   document.getElementById('artistName').innerHTML = artistProperty.name;
   document.getElementById('albumTitle').innerHTML = albumProperty.title;
   document.getElementById('numberOfSongs').innerHTML = songProperty.length;
-  document.getElementById('albumCover').src = albumProperty.pathToPicture;
+  document.getElementById('albumCover').src = albumProperty.cover;
 
   document.querySelector('.tracklist').innerHTML = songProperty.map((song, index) =>
     `            <li class='tracklistRow'>
@@ -63,7 +78,7 @@ $(document).ready(function() {
 
                         <div class='trackInfo'>
                           <span class='trackName'>"${song.title}"</span>
-                          <span class='artistName'>${artist.find(x => x.id == song.artistId).name}</span>
+                          <span class='artistName'>${song.contributors.map(x => x.name)}</span>
                         </div>
 
                         <div class='trackOptions'>
@@ -72,7 +87,7 @@ $(document).ready(function() {
                         </div>
 
                         <div class='trackDuration'>
-                          <span class='duration'>${song.duration}</span>
+                          <span class='duration'>${(song.duration / 60).toFixed(2)}</span>
                         </div>
                       </li>`
   ).join('')

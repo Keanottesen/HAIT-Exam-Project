@@ -25,3 +25,15 @@ class Song {
   }
 
 }
+
+function getAlbumSong(id) {
+  axios.get('http://localhost:8000/api/albumSongs/?album_id=' + id)
+    .then(response => {
+      console.log(response);
+      const data = response.data
+      pushToLocalStorage(data, 'choosenAlbumSongs')
+    })
+    .catch(error => {
+      console.log(error);
+    })
+}

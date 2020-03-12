@@ -91,6 +91,8 @@ const songOnclickHandler = (song) => {
  */
 const onAlbumClickHandler = (clicked) => {
   setState('album_id', clicked.id);
+  getAlbumById(clicked.id);
+
   window.location = 'album.html';
 }
 
@@ -244,11 +246,12 @@ function showOptionsMenu(button, songId) {
  */
  $(document).ready(function() {
 
-  setTimeout(function(){document.getElementById('activeUserName').innerHTML = userLoggedIn.firstName + " " + userLoggedIn.lastName}, 50);
+  setTimeout(function(){document.getElementById('activeUserName').innerHTML = userLoggedIn.firstName + " " + userLoggedIn.lastName}, 200);
 
   switch (window.location.pathname) {
     case '/browse':
       //render data in html
+      getAlbums()
       const browseAlbums = albums.slice(0, 28)
       console.log(browseAlbums[0]);
       document.querySelector('.gridViewContainer').innerHTML = browseAlbums.map(album =>
