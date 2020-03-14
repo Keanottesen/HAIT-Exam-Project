@@ -3,49 +3,106 @@
  * @type {Object}
  */
 let state = null;
-
-// /**
-//  * Array of objects
-//  * @type {Array<objects>}
-//  * @description global variables
-//  */
 let userLoggedIn = JSON.parse(localStorage.getItem('activeUser'))
-// let playlists = JSON.parse(localStorage.playlists);
+let playlists = JSON.parse(localStorage.getItem('userPlaylists'))
 let albums = JSON.parse(localStorage.getItem('albums'))
-// let artist = JSON.parse(localStorage.artist);
-// let songs = JSON.parse(localStorage.songs);
-// let users = JSON.parse(localStorage.users);
-// let playlistSongs = JSON.parse(localStorage.playlistSongs);
+let currentPlaylist = [];
+let shufflePlaylist = [];
+let tempPlaylist = [];
+let audioElement;
+let mouseDown = false;
+let currentIndex = 0;
+let repeat = false;
+let shuffle = false;
+let timer;
 
-//
-// if (users.find(x => x.active === true) === undefined) {
-//   window.location = 'index.html';
-// }
+$(document).click(function(click) {
+	var target = $(click.target);
 
-
-function pushToLocalStorage(object, name) {
-  let storageObject = JSON.stringify(object);
-  localStorage.setItem(name, storageObject);
-}
-
-if (localStorage.getItem("state") === null) {
-  state = {
-    album_id: null,
-    artist_id: null,
-    playlist_id: null,
-    song_id: null,
-    activeUser: {}
-  }
-  const storageState = JSON.stringify(state);
-  localStorage.setItem('state', storageState);
-} else {
-  var retrievedObject = localStorage.getItem('state');
-  state = JSON.parse(retrievedObject);
-}
-
-$(function(){
-  $("#nav-placeholder").load("navBarContainer.html");
+	if(!target.hasClass("item") && !target.hasClass("optionsButton")) {
+		hideOptionsMenu();
+	}
 });
+
+$(window).scroll(function() {
+	hideOptionsMenu();
+});
+
+function hideOptionsMenu() {
+	var menu = $(".optionsMenu");
+	if(menu.css("display") != "none") {
+		menu.css("display", "none");
+	}
+}
+
+if (window.location.pathname !== "/") {
+  $(function(){
+    $("#nav-placeholder").load("navBarContainer.html");
+  });
+  $(function(){
+    $("#nowPlaying-placeholder").load("nowPlayingBar.html");
+  });
+}
+
+const update_time = setInterval(time, 100)
+
+function time() {
+	try{
+		const song = document.getElementById(state.currentSongPlaying)
+		document.getElementById('progressTimeCurrent').innerHTML = song.currentTime.toFixed(2)
+		document.getElementById('progressTimeRemaining').innerHTML = (song.duration - song.currentTime).toFixed(2)
+
+} catch(e){
+}
+}
+
+function playSong(id, title, contributors, albumCover) {
+
+	var song = document.getElementById(id);
+	setState('currentSongPlaying', song.id)
+
+	document.addEventListener('play', function(e){
+	    var audios = document.getElementsByTagName('audio');
+	    for(var i = 0, len = audios.length; i < len;i++){
+	        if(audios[i] != e.target){
+	            audios[i].pause();
+	        }
+	    }
+	}, true);
+	console.log(albumCover);
+	if (song.paused) {
+			song.play();
+			document.getElementById('albumCoverNowPLaying').src = albumCover
+			document.getElementById('nowPlayingSongName').innerHTML = title
+			document.getElementById('nowPlayingArtists').innerHTML = contributors
+			document.getElementById("playButton").style.display = "none";
+			document.getElementById("pauseButton").style.display = "inline";
+			} else {
+			song.pause();
+			document.getElementById("playButton").style.display = "inline";
+			document.getElementById("pauseButton").style.display = "none";
+			}
+
+}
+
+function pauseSong() {
+	const song = document.getElementById(state.currentSongPlaying)
+	document.getElementById("pauseButton").style.display = "none";
+	document.getElementById("playButton").style.display = "inline";
+	song.pause()
+}
+
+function turnUpOrDown(control) {
+	const song = document.getElementById(state.currentSongPlaying)
+
+	if (control == 'down') {
+			song.volume = song.volume - 0.1
+	} else {
+		song.volume = song.volume + 0.1
+	}
+
+}
+
 
 
 /**
@@ -62,6 +119,27 @@ function setState(key, value) {
   localStorage.setItem('state', storageState);
 }
 
+function pushToLocalStorage(object, name) {
+  let storageObject = JSON.stringify(object);
+  localStorage.setItem(name, storageObject);
+}
+
+if (localStorage.getItem("state") === null) {
+  state = {
+    album_id: null,
+    artist_id: null,
+    playlist_id: null,
+    song_id: null,
+    activeUser: {},
+		currentSongPlaying: null
+  }
+  const storageState = JSON.stringify(state);
+  localStorage.setItem('state', storageState);
+} else {
+  var retrievedObject = localStorage.getItem('state');
+  state = JSON.parse(retrievedObject);
+}
+
 /**
  * @function
  * @name playlistOnclickHandler
@@ -69,8 +147,10 @@ function setState(key, value) {
  * @description this function calling the setState function in order to globally know what playlist that has been clicked, and thus render the correct view without routing
  */
 const playlistOnclickHandler = (clicked) => {
+  console.log(clicked);
   setState('playlist_id', clicked.id);
-  window.location = 'playlist.html';
+  getPlaylistById(clicked.id);
+   window.location = 'playlist.html';
 }
 
 /**
@@ -90,6 +170,7 @@ const songOnclickHandler = (song) => {
  * @description this function calling the setState function in order to globally know what album that has been clicked, and thus render the correct view without routing
  */
 const onAlbumClickHandler = (clicked) => {
+  console.log(clicked);
   setState('album_id', clicked.id);
   getAlbumById(clicked.id);
 
@@ -104,7 +185,8 @@ const onAlbumClickHandler = (clicked) => {
  */
 const onArtistClickHandler = (clicked) => {
   setState('artist_id', clicked.id);
-  window.location = 'artist.html';
+  getArtistById(clicked.id)
+   window.location = 'artist.html';
 }
 
 /**
@@ -132,35 +214,6 @@ function toObject(arr) {
   return rv;
 }
 
-
-/**
- * @function
- * @name removeFromPlaylist
- * @returns {void}
- * @description this function is handling the logic when a user want to remove a playlist from his collection on /yourMusic
- */
-function removeFromPlaylist() {
-
-  let userLoggedIn = users.find(x => x.active === true);
-  const songId = JSON.parse(localStorage.getItem("state")).song_id;
-  const playlistId = JSON.parse(localStorage.getItem("state")).playlist_id;
-
-  const deletedPlaylistSong = playlistSongs.find(x => x.playlistId == playlistId && x.songId == songId);
-
-  for (var i = 0; i < playlistSongs.length; i++) {
-
-    if (playlistSongs[i].id == deletedPlaylistSong.id) {
-        playlistSongs.splice(i, 1);
-    }
-  }
-
-  const storageObject = JSON.stringify(playlistSongs);
-  localStorage.setItem('playlistSongs', storageObject);
-  location.reload();
-
-}
-
-
 /**
  * @async
  * @function
@@ -170,10 +223,7 @@ function removeFromPlaylist() {
  */
 function addToPlaylist() {
 
-  let userLoggedIn = users.find(x => x.active === true);
-
-  let userPlaylists = playlists.filter(x => x.ownerUserId == userLoggedIn.id);
-  const playlistNames = userPlaylists.map(x => x.name);
+  const playlistNames = playlists.map(x => x.name);
   const newNames = toObject(playlistNames);
 
   (async () => {
@@ -192,19 +242,22 @@ function addToPlaylist() {
         };
       }
   })
+    const playlistId = playlists.filter(x => x.name == playlistNames[newSongToPlaylist])[0].id
+    const songId = state.song_id
 
-    const choosenPlaylist = userPlaylists[newSongToPlaylist];
+    axios.post('http://localhost:8000/api/createPlaylistSong', {
+        song_id: songId,
+        playlist_id: playlistId
+      })
+      .then(response => {
+        console.log(response);
+        const data = response.data
 
-    const songId = JSON.parse(localStorage.getItem("state")).song_id
+      })
+      .catch(error => {
+        console.log(error);
+      })
 
-        playlistSongs.push({
-                'id': playlistSongs.length,
-                'playlistId': choosenPlaylist.id,
-                'songId': songId
-            })
-
-        const storageObject = JSON.stringify(playlistSongs);
-        localStorage.setItem('playlistSongs', storageObject);
 
 })()
 }
@@ -246,8 +299,9 @@ function showOptionsMenu(button, songId) {
  */
  $(document).ready(function() {
 
-  setTimeout(function(){document.getElementById('activeUserName').innerHTML = userLoggedIn.firstName + " " + userLoggedIn.lastName}, 200);
-
+   if (window.location.pathname !== "/") {
+     setTimeout(function(){document.getElementById('activeUserName').innerHTML = userLoggedIn.firstName + " " + userLoggedIn.lastName}, 200);
+   }
   switch (window.location.pathname) {
     case '/browse':
       //render data in html
@@ -265,22 +319,6 @@ function showOptionsMenu(button, songId) {
 				 </div>`
       ).join('')
       break;
-    case '/yourMusic':
-
-    let userPlaylists = playlists.filter(x => x.ownerUserId == userLoggedIn.id);
-
-      document.querySelector('.playlistsGridContainer').innerHTML = userPlaylists.map(playlist =>
-        `      <div id='${playlist.id}'class='gridViewItem' role='link' tabindex='0'
-										onclick='playlistOnclickHandler(this)'>
-									<div class='playlistImage'>
-										<img src='assets/images/icons/playlist.png'>
-									</div>
-									<div class='gridViewInfo'>
-									${playlist.name}
-									</div>
-								</div>`).join('')
-      break;
-
 		case '/settings':
 
 		document.getElementById('activeUserName').innerHTML = userLoggedIn.firstName + ' ' + userLoggedIn.lastName;
@@ -289,53 +327,67 @@ function showOptionsMenu(button, songId) {
     const typeHandler = function(e) {
       console.log(e);
         let searchString = e.target.value;
-        const songsMacthingSearchString = songs.filter(x => x.title.includes(searchString))
-        const albumsMacthingSearchString = albums.filter(x => x.title.includes(searchString))
-        const artistsMacthingSearchString = artist.filter(x => x.name.includes(searchString))
 
-          if (searchString !== '') {
-            // render songs
-            document.querySelector('.tracklist').innerHTML = songsMacthingSearchString.map((song, index) =>
-              `      <li class='tracklistRow'>
-                      <div class='trackCount'>
-                        <span class='trackNumber'>${index + 1}</span>
-                      </div>
-                      <div class='trackInfo'>
-                        <span class='trackName'>${song.title}</span>
-                        <span class='artistName'>${artist.find(x => x.id === song.artistId).name}</span>
-                      </div>
+        const albumRequest = axios.get('http://localhost:8000/api/queryAlbum/?q=' + searchString)
+        const songRequest = axios.get('http://localhost:8000/api/querySong/?q=' + searchString)
+        const artistRequest = axios.get('http://localhost:8000/api/queryArtist/?q=' + searchString)
 
-                      <div class='trackOptions'>
-                        <img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this, ${song.id})'>
-                      </div>
+        axios.all([albumRequest, songRequest, artistRequest]).then(axios.spread((...responses) => {
+            const albumResponse = responses[0].data.slice(0, 5)
+            const songResponse = responses[1].data.slice(0, 5)
+            const artistResponse = responses[2].data.slice(0, 5)
 
-                      <div class='trackDuration'>
-                        <span class='duration'>${song.duration}</span>
-                      </div>
-                    </li>`
+            console.log(albumResponse);
+            console.log(songResponse);
+            console.log(artistResponse);
+
+            if (searchString !== '') {
+              // render songs
+              document.querySelector('.tracklist').innerHTML = songResponse.map((song, index) =>
+                `      <li class='tracklistRow'>
+                        <div class='trackCount'>
+                        <img class='play' src='assets/images/icons/play-white.png' onclick=''>
+                          <span class='trackNumber'>${index + 1}</span>
+                        </div>
+                        <div class='trackInfo'>
+                          <span class='trackName'>${song.title}</span>
+                          <span class='artistName'>${song.contributors.map(x => x.name).join(', ')}</span>
+                        </div>
+
+                        <div class='trackOptions'>
+                          <img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this, ${song.id})'>
+                        </div>
+
+                        <div class='trackDuration'>
+                          <span class='duration'>${(song.duration / 60).toFixed(2)}</span>
+                        </div>
+                      </li>`
+              ).join('')
+
+            //render artist
+            document.querySelector('.artistsInnerContainer').innerHTML = artistResponse.map((artist, index) =>
+            `
+            <div class='gridViewItem'>
+                <span role='link' id=${artist.id} tabindex='0' onclick='onArtistClickHandler(this)'>
+                  <img src='${artist.picture}'>
+                  <div class='gridViewInfo'>${artist.name}</div>
+                  </span>
+                </div>`
             ).join('')
 
-          //render artist
-          document.querySelector('.artistsInnerContainer').innerHTML = artistsMacthingSearchString.map((artist, index) =>
-          ` <div class='searchResultRow'>
-              <div class='artistName'>
-                <span role='link' id=${artist.id} tabindex='0' onclick='onArtistClickHandler(this)'>
-                    ${artist.name}
-                </span>
-              </div>
-            </div>`
-          ).join('')
-
-          //render albums
-          document.querySelector('.gridViewInnerContainer').innerHTML = albumsMacthingSearchString.map((album, index) =>
-          ` <div class='gridViewItem'>
-      				<span role='link' id=${album.id} tabindex='0' onclick='onAlbumClickHandler(this)'>
-      					<img src='${album.pathToPicture}'>
-      					<div class='gridViewInfo'>${album.title}</div>
-      					</span>
-      				</div>`
-          ).join('')
-          }
+            //render albums
+            document.querySelector('.gridViewInnerContainer').innerHTML = albumResponse.map((album, index) =>
+            ` <div class='gridViewItem'>
+                <span role='link' id=${album.id} tabindex='0' onclick='onAlbumClickHandler(this)'>
+                  <img src='${album.cover}'>
+                  <div class='gridViewInfo'>${album.title}</div>
+                  </span>
+                </div>`
+            ).join('')
+            }
+          })).catch(errors => {
+            // react on errors.
+          })
     }
 
     const source = document.querySelector('.searchInput');

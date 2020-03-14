@@ -52,7 +52,6 @@ function getAlbumById(id){
     // TODO: Catch error
     console.log(error);
   })
-
 }
 
 
@@ -62,7 +61,7 @@ $(document).ready(function() {
   getAlbumSong(albumProperty.api_id)
   const artistProperty = albumProperty.contributors[0]
   const songProperty = JSON.parse(localStorage.getItem('choosenAlbumSongs'))
-
+  console.log(albumProperty);
   //setting values in album.html
   document.getElementById('artistName').innerHTML = artistProperty.name;
   document.getElementById('albumTitle').innerHTML = albumProperty.title;
@@ -72,16 +71,17 @@ $(document).ready(function() {
   document.querySelector('.tracklist').innerHTML = songProperty.map((song, index) =>
     `            <li class='tracklistRow'>
                         <div class='trackCount'>
+                        <img class='play' src='assets/images/icons/play-white.png' onclick='playSong("${song.api_id}", "${song.title}", "${song.contributors.map(x => x.name).join(', ')}", "${albumProperty.cover}")'>
                           <span class='trackNumber'>${index + 1}</span>
                         </div>
 
-
                         <div class='trackInfo'>
                           <span class='trackName'>"${song.title}"</span>
-                          <span class='artistName'>${song.contributors.map(x => x.name)}</span>
+                          <span class='artistName'>${song.contributors.map(x => x.name).join(', ')}</span>
                         </div>
 
                         <div class='trackOptions'>
+                        <audio id="${song.api_id}" src="${song.preview}"></audio>
                           <input type='hidden' class='songId' value=''>
                           <img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this, ${song.id})'>
                         </div>

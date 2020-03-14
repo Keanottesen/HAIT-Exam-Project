@@ -1,0 +1,76 @@
+<div id="nowPlayingBarContainer">
+
+	<div id="nowPlayingBar">
+
+		<div id="nowPlayingLeft">
+			<div class="content">
+				<span class="albumLink">
+					<img role="link" tabindex="0" src="" class="albumArtwork" id="albumCoverNowPLaying">
+				</span>
+
+				<div class="trackInfo">
+
+					<span id="nowPlayingSongName" class="trackName">
+						<span role="link" tabindex="0"></span>
+					</span>
+
+					<span id="nowPlayingArtists" class="artistName">
+						<span role="link" tabindex="0"></span>
+					</span>
+
+				</div>
+
+
+
+			</div>
+		</div>
+
+		<div id="nowPlayingCenter">
+
+			<div class="content playerControls">
+
+				<div class="buttons">
+
+					<button class="controlButton" title="turnDown button" onclick="turnUpOrDown('down')">
+						<img src="assets/images/icons/volumeLow.png" alt="turnDown">
+					</button>
+
+					<button id="playButton" class="controlButton play" title="Play button" onclick="playSong(state.currentSongPlaying)">
+						<img src="assets/images/icons/play.png" alt="Play">
+					</button>
+
+					<button id="pauseButton" class="controlButton pause" title="Pause button" style="display: none;" onclick="pauseSong()">
+						<img src="assets/images/icons/pause.png" alt="Pause">
+					</button>
+
+					<button class="controlButton" title="turnUp button" onclick="turnUpOrDown('up')">
+						<img src="assets/images/icons/volumeHigh.png" alt="turnUp">
+					</button>
+
+				</div>
+
+
+				<div class="playbackBar">
+
+					<span id="progressTimeCurrent" class="progressTime current">0.00</span>
+
+					<div class="progressBar">
+						<div class="progressBarBg">
+							<div class="progress"></div>
+						</div>
+					</div>
+
+					<span id="progressTimeRemaining" class="progressTime remaining">0.00</span>
+
+
+				</div>
+
+
+			</div>
+
+
+		</div>
+
+	</div>
+
+</div>

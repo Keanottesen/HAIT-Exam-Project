@@ -22,6 +22,43 @@ class Playlist {
 
 }
 
+/**
+ * @function
+ * @name getAllPlaylist
+ * @returns {void}
+ * @description this function is getting all the playlist for the user
+ */
+function getAllPlaylist() {
+  axios.get('http://localhost:8000/api/userPlaylists?user_id=' + userLoggedIn.id)
+    .then(response => {
+      console.log(response);
+      const data = response.data
+      pushToLocalStorage(data, 'userPlaylists')
+    })
+    .catch(error => {
+      console.log(error);
+    })
+}
+
+function getPlaylistById(id) {
+  axios.get('http://localhost:8000/api/playlist/?playlist_id=' + id)
+    .then(response => {
+      const data = response.data
+      pushToLocalStorage(data, 'songsInPlaylist')
+    })
+    .catch(error => {
+      if (error.response.status == 400) {
+        (async () => {
+          const alert = await Swal.fire({
+          title: 'Hov hvis du ønsker at fjerne den sidste sang skal du fjerne hele playlisten',
+          background: '#181818',
+          icon: 'question',
+          confirmButtonColor: '#2FBD5A',
+        })
+      })()
+      }
+    })
+}
 
 /**
  * @async
@@ -47,20 +84,22 @@ function createPlaylist() {
   }
   })
 
-  	let userLoggedIn = users.find(x => x.active === true);
     if (newPlaylist != null) {
-
-      const newPlaylistObject = new Playlist(
-  			    JSON.parse(localStorage.playlists).length,
-  			    newPlaylist,
-  			    userLoggedIn.id,
-  			    new Date()
-  			  )
-
-  		playlists.push(newPlaylistObject)
-  				this.pushToLocalStorage(playlists, 'playlists');
-          location.reload();
-        };
+      axios.post('http://localhost:8000/api/createPlaylist', {
+        name: newPlaylist,
+        owner_user_id: userLoggedIn.id,
+      })
+      .then(response => {
+        const playlist = response.data
+        console.log(playlist);
+        getAllPlaylist()
+        location.reload()
+      })
+      .catch(error => {
+        // TODO: Catch error
+        console.log(error);
+      })
+    };
 })()
   }
 
@@ -72,10 +111,8 @@ function createPlaylist() {
    * @description this function is handling the logic when a user wants to delete a playlist
    */
 function deletePlaylist() {
-
     (async () => {
-
-      var deletedPlaylist = await Swal.fire({
+      const deletedPlaylist = await Swal.fire({
       title: 'Er du sikker?',
       background: '#181818',
       icon: 'info',
@@ -83,41 +120,53 @@ function deletePlaylist() {
       confirmButtonColor: '#2FBD5A',
     }).then(() => {
 
-      const deletedPlaylistId = JSON.parse(localStorage.getItem("state")).playlist_id
-      for (var i = 0; i < playlists.length; i++) {
+      axios.put('http://localhost:8000/api/updatePlaylist/' + state.playlist_id, {
+        deleted_at: new Date()
+      })
+      .then(response => {
+        console.log(response);
+        getAllPlaylist()
+        window.location = 'yourMusic.html';
+      })
+      .catch(error => {
+        // TODO: Catch error
+        console.log(error);
+      })
 
-        if (playlists[i].id == deletedPlaylistId) {
-          console.log(playlists[i]);
-            playlists.splice(i, 1);
-        }
-      }
-      const storageObject = JSON.stringify(playlists);
-      localStorage.setItem('playlists', storageObject);
-      window.location = 'yourMusic.html';
     })
   })()
 }
 
+
 /**
- * Artist id
- * @type {integer}
+ * @function
+ * @name removeFromPlaylist
+ * @returns {void}
+ * @description this function is handling the logic when a user want to remove a playlist from his collection on /yourMusic
  */
-const playlistId = JSON.parse(localStorage.getItem("state")).playlist_id
+function removeFromPlaylist() {
+
+  axios.put('http://localhost:8000/api/deletePlaylistSong', {
+    song_id: state.song_id,
+    playlist_id: state.playlist_id,
+    deleted_at: new Date()
+  })
+  .then(response => {
+    getPlaylistById(state.playlist_id)
+    // location.reload();
+  })
+  .catch(error => {
+    // TODO: Catch error
+    console.log(error);
+  })
+
+}
+
 /**
  * object containing an array of alubums
 * @typedef {Object} Playlist
  */
-const playlistProperty = playlists.find(x => x.id == playlistId)
-/**
- * Array of songids
- * @type {Array<number>}
- */
-const songIds = playlistSongs.filter(x => x.playlistId == playlistId).map(item => item.songId)
-/**
- * See {@link Song}
- */
-const songsInPlaylist = songs.filter(x => songIds.includes(x.id))
-
+ const playlistProperty = JSON.parse(localStorage.getItem('songsInPlaylist'))
 
 /** @function
  * @name playlistRendering
@@ -126,34 +175,47 @@ const songsInPlaylist = songs.filter(x => songIds.includes(x.id))
  */
 $(document).ready(function() {
 if (window.location.pathname == '/playlist') {
-  document.getElementById('playlistName').innerHTML = playlistProperty.name;
-  document.getElementById('playlistOwner').innerHTML = playlistProperty.owner;
-  document.getElementById('playlistSongs').innerHTML = songIds.length + ' songs';
+  document.getElementById('playlistName').innerHTML = playlistProperty.playlistName;
+  document.getElementById('playlistOwner').innerHTML = userLoggedIn.firstName + ' ' + userLoggedIn.lastName;
+  document.getElementById('playlistSongs').innerHTML = playlistProperty.nbTracks + ' songs';
 
-  document.querySelector('.tracklist').innerHTML = songsInPlaylist.map((song, index) =>
+  document.querySelector('.tracklist').innerHTML = playlistProperty.songs.map((song, index) =>
     `            <li class='tracklistRow'>
                       <div class='trackCount'>
+                      <img class='play' src='assets/images/icons/play-white.png' onclick=''>
                         <span class='trackNumber'>${index + 1}</span>
                       </div>
 
 
                       <div class='trackInfo'>
-                        <span class='trackName'>${song.title}</span>
-                        <span class='artistName'>${artist.find(x => x.id == song.artistId).name}</span>
+                        <span class='trackName'>${song.songTitle}</span>
+                        <span class='artistName'>${song.artists.join(' ')}</span>
                       </div>
 
                       <div class='trackOptions'>
-                        <input type='hidden' class='songId' value='" . $playlistSong->getId() . "'>
-                        <img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this, ${song.id})'>
+                        <img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this, ${song.songId})'>
                       </div>
 
                       <div class='trackDuration'>
-                        <span class='duration'>${song.duration}</span>
+                        <span class='duration'>${(song.duration / 60).toFixed(2)}</span>
                       </div>
 
 
                     </li>`
   ).join('')
+} else if (window.location.pathname == '/yourMusic') {
+  getAllPlaylist()
+  const userPlaylists = JSON.parse(localStorage.getItem('userPlaylists'))
 
+    document.querySelector('.playlistsGridContainer').innerHTML = userPlaylists.map(playlist =>
+      `      <div id='${playlist.id}'class='gridViewItem' role='link' tabindex='0'
+                  onclick='playlistOnclickHandler(this)'>
+                <div class='playlistImage'>
+                  <img src='assets/images/icons/playlist.png'>
+                </div>
+                <div class='gridViewInfo'>
+                ${playlist.name}
+                </div>
+              </div>`).join('')
 }
 })

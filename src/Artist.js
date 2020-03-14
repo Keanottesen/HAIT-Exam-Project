@@ -18,26 +18,27 @@ class Artist {
 
 }
 
-/**
- * Artist id
- * @type {integer}
- */
-const artistId = JSON.parse(localStorage.getItem("state")).artist_id
+function getArtistById(id){
+
+  axios.get('http://localhost:8000/api/artist/?artist_id=' + id)
+  .then(response => {
+    const data = response.data
+    pushToLocalStorage(data, 'choosenArtist')
+  })
+  .catch(error => {
+    // TODO: Catch error
+    console.log(error.response);
+  })
+
+}
+
 /**
  * object containing an array of alubums
 * @typedef {Object} Artist
  */
-const choosenArtist = artist.find(x => x.id == artistId);
-/**
- * See {@link Song}
- */
-const artistSongs = songs.filter(x => x.artistId == artistId)
-/**
- * See {@link Album}
- */
-const artistAlbums = albums.filter(x => x.artistId == artistId)
+const choosenArtist = JSON.parse(localStorage.getItem('choosenArtist'))
 
-
+  console.log(choosenArtist);
 /** @function
  * @name renderingAlbum
  * @returns void
@@ -49,36 +50,38 @@ $(document).ready(function() {
   /**
    * @description This is populating the artist view whith the choosen artist name
    */
-  document.querySelector('.artistName').innerHTML = choosenArtist.name;
-  
- document.querySelector('.tracklist').innerHTML = artistSongs.map((song, index) =>
+  document.querySelector('.artistName').innerHTML = choosenArtist.artistName;
+  document.getElementById('artistPicture').src = choosenArtist.artistPicture;
+
+ document.querySelector('.tracklist').innerHTML = choosenArtist.songs.map((song, index) =>
    `<li class='tracklistRow'>
          <div class='trackCount'>
+         <img class='play' src='assets/images/icons/play-white.png' onclick=''>
            <span class='trackNumber'>${index + 1}</span>
          </div>
 
 
          <div class='trackInfo'>
-           <span class='trackName'>${song.title}</span>
-           <span class='artistName'>${artist.find(x => x.id == song.artistId).name}</span>
+           <span class='trackName'>${song.songTitle}</span>
+           <span class='artistName'>${song.songContributors.join(', ')}</span>
          </div>
 
          <div class='trackOptions'>
            <input type='hidden' class='songId' value=''>
-           <img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this, ${song.id})'>
+           <img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this, ${song.songId})'>
          </div>
 
          <div class='trackDuration'>
-           <span class='duration'>${song.duration}</span>
+           <span class='duration'>${(song.songDuration / 60).toFixed(2)}</span>
          </div>
        </li>`
  ).join('')
 
- document.querySelector('.gridViewInnerContainer').innerHTML = artistAlbums.map((album, index) =>
+ document.querySelector('.gridViewInnerContainer').innerHTML = choosenArtist.albums.map((album, index) =>
  `<div class='gridViewItem'>
-     <span role='link' id=${album.id} tabindex='0' onclick='onAlbumClickHandler(this)'>
-       <img src='${album.pathToPicture}'>
-       <div class='gridViewInfo'>${album.title}</div>
+     <span role='link' id=${album.albumId} tabindex='0' onclick='onAlbumClickHandler(this)'>
+       <img src='${album.albumCover}'>
+       <div class='gridViewInfo'>${album.albumTitle}</div>
        </span>
      </div>`
  ).join('')
