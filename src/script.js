@@ -57,9 +57,12 @@ function time() {
 }
 
 function playSong(id, title, contributors, albumCover) {
-
+	console.log(title);
 	var song = document.getElementById(id);
 	setState('currentSongPlaying', song.id)
+	setState('currentSongPlayingTitle', title)
+	setState('currentSongPlayingContributors', contributors)
+	setState('currentSongPlayingAlbumCover', albumCover)
 
 	document.addEventListener('play', function(e){
 	    var audios = document.getElementsByTagName('audio');
@@ -69,7 +72,7 @@ function playSong(id, title, contributors, albumCover) {
 	        }
 	    }
 	}, true);
-	console.log(albumCover);
+
 	if (song.paused) {
 			song.play();
 			document.getElementById('albumCoverNowPLaying').src = albumCover
@@ -131,7 +134,10 @@ if (localStorage.getItem("state") === null) {
     playlist_id: null,
     song_id: null,
     activeUser: {},
-		currentSongPlaying: null
+		currentSongPlaying: null,
+		currentSongPlayingTitle: null,
+		currentSongPlayingContributors: null,
+		currentSongPlayingAlbumCover: null
   }
   const storageState = JSON.stringify(state);
   localStorage.setItem('state', storageState);
@@ -346,7 +352,7 @@ function showOptionsMenu(button, songId) {
               document.querySelector('.tracklist').innerHTML = songResponse.map((song, index) =>
                 `      <li class='tracklistRow'>
                         <div class='trackCount'>
-                        <img class='play' src='assets/images/icons/play-white.png' onclick=''>
+                        <img class='play' src='assets/images/icons/play-white.png' onclick='playSong("${song.api_id}", "${song.title}", "${song.contributors.map(x => x.name).join(', ')}", "${song.cover}")'>
                           <span class='trackNumber'>${index + 1}</span>
                         </div>
                         <div class='trackInfo'>
@@ -355,6 +361,7 @@ function showOptionsMenu(button, songId) {
                         </div>
 
                         <div class='trackOptions'>
+												<audio id="${song.api_id}" src="${song.preview}"></audio>
                           <img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this, ${song.id})'>
                         </div>
 

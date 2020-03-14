@@ -56,7 +56,7 @@ $(document).ready(function() {
  document.querySelector('.tracklist').innerHTML = choosenArtist.songs.map((song, index) =>
    `<li class='tracklistRow'>
          <div class='trackCount'>
-         <img class='play' src='assets/images/icons/play-white.png' onclick=''>
+         <img class='play' src='assets/images/icons/play-white.png' onclick='playSong("${song.api_id}", "${song.songTitle}", "${song.songContributors.join(', ')}", "${song.songAlbumCover}")'>
            <span class='trackNumber'>${index + 1}</span>
          </div>
 
@@ -67,6 +67,7 @@ $(document).ready(function() {
          </div>
 
          <div class='trackOptions'>
+         <audio id="${song.api_id}" src="${song.songPreview}"></audio>
            <input type='hidden' class='songId' value=''>
            <img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this, ${song.songId})'>
          </div>

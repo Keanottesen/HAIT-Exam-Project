@@ -178,11 +178,11 @@ if (window.location.pathname == '/playlist') {
   document.getElementById('playlistName').innerHTML = playlistProperty.playlistName;
   document.getElementById('playlistOwner').innerHTML = userLoggedIn.firstName + ' ' + userLoggedIn.lastName;
   document.getElementById('playlistSongs').innerHTML = playlistProperty.nbTracks + ' songs';
-
+  console.log(playlistProperty);
   document.querySelector('.tracklist').innerHTML = playlistProperty.songs.map((song, index) =>
     `            <li class='tracklistRow'>
                       <div class='trackCount'>
-                      <img class='play' src='assets/images/icons/play-white.png' onclick=''>
+                      <img class='play' src='assets/images/icons/play-white.png' onclick='playSong("${song.songApi_id}", "${song.songTitle}", "${song.artists.join(' ')}", "${song.cover}")'>
                         <span class='trackNumber'>${index + 1}</span>
                       </div>
 
@@ -193,6 +193,7 @@ if (window.location.pathname == '/playlist') {
                       </div>
 
                       <div class='trackOptions'>
+                      <audio id="${song.songApi_id}" src="${song.preview}"></audio>
                         <img class='optionsButton' src='assets/images/icons/more.png' onclick='showOptionsMenu(this, ${song.songId})'>
                       </div>
 
