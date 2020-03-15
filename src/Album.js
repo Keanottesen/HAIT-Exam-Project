@@ -54,6 +54,17 @@ function getAlbumById(id){
   })
 }
 
+function getAlbumSong(id) {
+  axios.get('http://localhost:8000/api/albumSongs/?album_id=' + id)
+    .then(response => {
+      const data = response.data
+      pushToLocalStorage(data, 'choosenAlbumSongs')
+    })
+    .catch(error => {
+      console.log(error);
+    })
+}
+
 
 $(document).ready(function() {
 
@@ -61,7 +72,7 @@ $(document).ready(function() {
   getAlbumSong(albumProperty.api_id)
   const artistProperty = albumProperty.contributors[0]
   const songProperty = JSON.parse(localStorage.getItem('choosenAlbumSongs'))
-  console.log(albumProperty);
+
   //setting values in album.html
   document.getElementById('artistName').innerHTML = artistProperty.name;
   document.getElementById('albumTitle').innerHTML = albumProperty.title;

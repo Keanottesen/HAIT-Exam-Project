@@ -179,7 +179,6 @@ const onAlbumClickHandler = (clicked) => {
   console.log(clicked);
   setState('album_id', clicked.id);
   getAlbumById(clicked.id);
-
   window.location = 'album.html';
 }
 
