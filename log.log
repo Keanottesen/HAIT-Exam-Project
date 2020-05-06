@@ -1,22 +1,31 @@
-* 549f349 : last commit
-* eef5659 : changes in documentaion
-* 7805b38 : ignored node modules
-* 26f65ff : test completed
-* baaecc5 : final commit
-* 36155f3 : more documentation
-* 71c7979 : refactoring
-* 0fa64e1 : js doc init
-* 7799240 : js doc for documentation
-* c5dc69c : playlist datastructure redesigned
-* 20e3a8e : small changes
-* 20f042f : artist and search
-* f54a7dd : remove from playlist
-* b2cae52 : add songs to playlists
-* 90d19f5 : small changes
-* 190120c : different functionality
-* af2f971 : beautify
-* 6d9b09e : layout
-* f820b1d : album page
-* 5151e4f : browse and login
-* e698530 : init
-* ef0d076 : Initial commit
+cc52e77 was Keanottesen, 7 weeks ago, message: clean up
+8c2f380 was Keanottesen, 8 weeks ago, message: connected front-end to back-end
+54dd4f8 was Keanottesen, 8 weeks ago, message: finished
+993aab6 was Keanottesen, 8 weeks ago, message: album works
+cc34f8e was Keanottesen, 8 weeks ago, message: albums inserted
+7424397 was Keanottesen, 8 weeks ago, message: Merge branch 'master' of https://github.com/Keanottesen/HAIT-Exam-Project
+c45f5c4 was Keanottesen, 8 weeks ago, message: ic
+012f990 was Keanottesen, 8 weeks ago, message: ic
+4710f02 was Keanottesen, 8 weeks ago, message: axios import
+549f349 was Keanottesen, 5 months ago, message: last commit
+eef5659 was Keanottesen, 5 months ago, message: changes in documentaion
+7805b38 was Keanottesen, 5 months ago, message: ignored node modules
+26f65ff was Keanottesen, 5 months ago, message: test completed
+baaecc5 was Keanottesen, 5 months ago, message: final commit
+36155f3 was Keanottesen, 5 months ago, message: more documentation
+71c7979 was Keanottesen, 5 months ago, message: refactoring
+0fa64e1 was Keanottesen, 5 months ago, message: js doc init
+7799240 was Keanottesen, 5 months ago, message: js doc for documentation
+c5dc69c was Keanottesen, 5 months ago, message: playlist datastructure redesigned
+20e3a8e was Keanottesen, 6 months ago, message: small changes
+20f042f was Keanottesen, 6 months ago, message: artist and search
+f54a7dd was Keanottesen, 6 months ago, message: remove from playlist
+b2cae52 was Keanottesen, 6 months ago, message: add songs to playlists
+90d19f5 was Keanottesen, 6 months ago, message: small changes
+190120c was Keanottesen, 6 months ago, message: different functionality
+af2f971 was Keanottesen, 6 months ago, message: beautify
+6d9b09e was Keanottesen, 6 months ago, message: layout
+f820b1d was Keanottesen, 6 months ago, message: album page
+5151e4f was Keanottesen, 6 months ago, message: browse and login
+e698530 was Keanottesen, 6 months ago, message: init
+ef0d076 was Keanottesen, 6 months ago, message: Initial commit
